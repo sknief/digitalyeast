@@ -1,3 +1,15 @@
+## README.md
+
+This repository is for the code used in my research semester 2020 (code name digital yeast) @ UQ. 
+
+It is still a work in progress and this documentation did not start at the beginning of my project, therefore the history of master branch is not reflective of the total research effort. I will upload my old versions at some point. 
+
+I am the sole author of this code, but I did lean on the SLiM manual (http://benhaller.com/slim/SLiM_Manual.pdf) while working on this project. 
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+Generic GitHub Info below (kept for reference)
+
 ## Welcome to GitHub Pages
 
 You can use the [editor on GitHub](https://github.com/sknief/digitalyeast/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
