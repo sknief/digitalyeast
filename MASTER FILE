@@ -76,7 +76,7 @@ initializeMutationRate(1e-8);
 
 initializeRecombinationRate(1e-8);
 
-defineConstant("QTL_optima", c(-20.0, 20.0));
+defineConstant("QTL_optima", c(0.0, 20.0));
 }
 
 //NEWLY WRITTEN EXPERIMENTAL CODE
@@ -100,11 +100,11 @@ for (ind in sim.subpopulations.individuals)
    ind.setValue("phenotype0", phenotype0);
    ind.setValue("phenotype1", phenotype1);
 
-   
+
  // calculate fitness effects
- effect0 = 1.0 + dnorm(QTL_optima[0] - phenotype0, 0.0, 20.0) * 10.0;
- effect1 = 1.0 + dnorm(QTL_optima[1] - phenotype1, 0.0, 20.0) * 10.0;
- ind.fitnessScaling = effect0 * effect1;
+ effect0 = 1.0 + dnorm(QTL_optima[0] - phenotype0, 0.0, 20.0) * 2.0;
+ effect1 = 1.0 + dnorm(QTL_optima[1] - phenotype1, 0.0, 20.0) * 2.0;
+ ind.fitnessScaling = 80 + effect1 - effect0;
  }
 }
 //now comes the real fucked bit
@@ -118,11 +118,13 @@ if (sim.generation % 1000 != 0)
  inds = sim.subpopulations.individuals;
  p0_mean = mean(inds.getValue("phenotype0"));
  p1_mean = mean(inds.getValue("phenotype1"));
+ fit_mean = mean(ind.fitnessScaling);
 
  catn();
  catn("Generation: " + sim.generation);
- catn("Mean phenotype 0: " + p0_mean + " (" + QTL_optima[0] + ")");
- catn("Mean phenotype 1: " + p1_mean + " (" + QTL_optima[1] + ")");
+ catn("Mean frequency of deleterious mutations: " + p0_mean + " (" + QTL_optima[0] + ")");
+ catn("Mean frequency of beneficial mutations: " + p1_mean + " (" + QTL_optima[1] + ")");
+ catn("Mean fitness of population: " + fit_mean);
 
 //update our plot
  history = sim.getValue("history");
@@ -135,9 +137,9 @@ if (sim.generation % 1000 != 0)
  'y <- c(' + paste(history[,1], sep=", ") + ')',
  'quartz(width=4, height=4, type="pdf", file="' + pdfPath + '")',
  'par(mar=c(4.0, 4.0, 1.5, 1.5))',
- 'plot(x=c(-10,30), y=c(-30,10), type="n", xlab="x", ylab="y")',
+ 'plot(x=c(-10,100), y=c(-10,100), type="n", xlab="x", ylab="y")',
  'points(x=0,y=0,col="red", pch=19, cex=2)',
- 'points(x=20,y=-20,col="green", pch=19, cex=2)',
+ 'points(x=0,y=80,col="green", pch=19, cex=2)',
  'points(x=x, y=y, col="black", pch=19, cex=0.5)',
  'lines(x=x, y=y)',
  'dev.off()',
