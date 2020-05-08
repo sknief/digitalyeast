@@ -1,0 +1,59 @@
+
+
+// START COMMANDS - DNI
+// set up a simple neutral simulation
+initialize() {
+initializeMutationRate(1e-8);
+
+//MUTATION TYPES AND RATES
+//remember: the formula is ("name", dominance, "distribution", coefficient for distribution)
+// N mutation type: neutral
+initializeMutationType("N", 0.5, "n", 0.0, 0.01);
+// D mutation type: deleterious
+initializeMutationType("D", 0.1, "n", 0.0, 0.01); REVIEW
+// B mutation type: beneficial
+initializeMutationType("B", 0.2, "n", 0.0, 0.01);  REVIEW
+
+
+//GENOME STRUCTURE
+// g1 genomic element type: uses m1 for all mutations
+initializeGenomicElementType("non-coding", N, 1.0);
+initializeGenomicElementType("coding", c(N, D, B), c(1.0, 1.0, 1.0));
+initializeGenomicElementType("promoter", c(N, D, B), c(1.0, 1.0, 1.0));
+
+
+//CHROMOSOME STRUCTURE
+// uniform chromosome of length 100 kb with uniform recombination
+initializeGenomicElement(non-coding, 0, 1999);
+initializeGenomicElement(promoter, 2000, 2999); // GAL 7
+initializeGenomicElement(non-coding, 3000, 12999);
+initializeGenomicElement(promoter, 13000, 13999);    //GAL 10
+initializeGenomicElement(non-coding, 14000, 23999);
+initializeGenomicElement(promoter, 24000, 24999);    //GAL 1
+initializeGenomicElement(coding, 25000, 29999);     // GAL 1
+initializeGenomicElement(non-coding, 30000, 39999);
+initializeGenomicElement(promoter, 40000, 40999);     // GAL 3
+initializeGenomicElement(coding, 41000, 45999);    // GAL 3
+initializeGenomicElement(non-coding, 46000, 50999);
+initializeGenomicElement(promoter, 51000, 51999);   // GAL 2
+initializeGenomicElement(non-coding, 52000, 61999);
+initializeGenomicElement(promoter, 62000, 62999); // GAL 80
+initializeGenomicElement(coding, 63000, 67999);  // GAL 80
+initializeGenomicElement(non-coding, 68000, 77999);
+initializeGenomicElement(promoter, 78000, 78999); // GAL 5
+initializeGenomicElement(non-coding, 79000, 88999);
+initializeGenomicElement(promoter, 89000, 89999);    //GAL 4
+initializeGenomicElement(coding, 90000, 99999);     // GAL 4
+
+initializeRecombinationRate(1e-8);
+}
+ 
+// create a population of 500 individuals
+1 {
+sim.addSubpop("p1", 500);
+}
+ 
+// output samples of 10 genomes periodically, all fixed mutations at end
+1000 late() { p1.outputSample(10); }
+2000 late() { p1.outputSample(10); }
+20000 late() { sim.outputFixedMutations(); }
