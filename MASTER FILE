@@ -1,4 +1,4 @@
-// Tentative Fitness Model based on 1.2.2 and Slim Manual 13.4
+// Tentative Fitness Model based on 1.2.2 and Slim Manual 13.5
 
 // START COMMANDS - DNI
 // set up a simple neutral simulation
@@ -20,19 +20,19 @@ initializeMutationRate(1e-8);
     m3.color = "green";
 
     //GENOME STRUCTURE
-    initializeGenomicElementType("g1", m1, 1.0); //non-coding
-    initializeGenomicElementType("g2", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //GAL7 promoter
-    initializeGenomicElementType("g3", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //GAL10 promoter
-    initializeGenomicElementType("g4", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //GAL1 promoter
-    initializeGenomicElementType("g5", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //GAL1 coding
-    initializeGenomicElementType("g6", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //GAL3 promoter
-    initializeGenomicElementType("g7", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //GAL3 coding
-    initializeGenomicElementType("g8", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //GAL2 promoter
-    initializeGenomicElementType("g9", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //GAL80 promoter
-    initializeGenomicElementType("g10", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //GAL80 coding
-    initializeGenomicElementType("g11", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //GAL5 promoter
-    initializeGenomicElementType("g12", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //GAL4 promoter
-    initializeGenomicElementType("g13", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //GAL4 coding
+  	initializeGenomicElementType("g1", m1, 1.0); //non-coding
+  	initializeGenomicElementType("g2", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL7 promoter
+  	initializeGenomicElementType("g3", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL10 promoter
+  	initializeGenomicElementType("g4", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL1 promoter
+  	initializeGenomicElementType("g5", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL1 coding
+  	initializeGenomicElementType("g6", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL3 promoter
+  	initializeGenomicElementType("g7", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL3 coding
+  	initializeGenomicElementType("g8", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL2 promoter
+  	initializeGenomicElementType("g9", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL80 promoter
+  	initializeGenomicElementType("g10", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL80 coding
+  	initializeGenomicElementType("g11", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL5 promoter
+  	initializeGenomicElementType("g12", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL4 promoter
+  	initializeGenomicElementType("g13", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL4 coding
 
     //CHROMOSOME STRUCTURE
     // uniform chromosome of length 100 kb with uniform recombination
@@ -76,7 +76,7 @@ initializeMutationRate(1e-8);
 
 initializeRecombinationRate(1e-8);
 
-defineConstant("QTL_optima", c(-20, 20));
+defineConstant("QTL_optima", c(-20.0, 20.0));
 }
 
 //NEWLY WRITTEN EXPERIMENTAL CODE
@@ -86,11 +86,21 @@ for (ind in sim.subpopulations.individuals)
  // construct phenotypes from additive effects of QTL mutations
  m2muts = ind.genomes.mutationsOfType(m2);
  m3muts = ind.genomes.mutationsOfType(m3);
- phenotype0 = size(m2muts);
- phenotype1 = size(m3muts);
- ind.setValue("phenotype0", phenotype0);
- ind.setValue("phenotype1", phenotype1);
 
+ if (size(m2muts) == 0){
+     phenotype0 = 0.0; }
+   else {
+     phenotype0 = size(m2muts); }
+
+   if (size(m3muts) == 0){
+     phenotype1 = 0.0; }
+   else {
+     phenotype1 = size(m3muts);}
+
+   ind.setValue("phenotype0", phenotype0);
+   ind.setValue("phenotype1", phenotype1);
+
+   
  // calculate fitness effects
  effect0 = 1.0 + dnorm(QTL_optima[0] - phenotype0, 0.0, 20.0) * 10.0;
  effect1 = 1.0 + dnorm(QTL_optima[1] - phenotype1, 0.0, 20.0) * 10.0;
