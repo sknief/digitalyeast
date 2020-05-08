@@ -1,0 +1,91 @@
+//VERSION UPDATE: fitness functions
+
+// START COMMANDS - DNI
+// set up a simple neutral simulation
+initialize() {
+initializeMutationRate(1e-8);
+
+//MUTATION TYPES AND RATES
+//remember: the formula is ("name", dominance, "distribution", coefficient for distribution)
+  // N mutation type: neutral
+    initializeMutationType("m1", 0.5, "f", 0.0);
+    m1.color = "yellow";
+  // D mutation type: deleterious
+    initializeMutationType("m2", 0.5, "e", 0.4);
+    m2.convertToSubstitution = F; // to make sure fixed mutations still have an effect
+    m2.color = "red";
+  // B mutation type: slightly beneficial
+    initializeMutationType("m3", 0.5, "g", 0.5, 1.0);
+    m3.convertToSubstitution = F;
+    m3.color = "green";
+
+    //GENOME STRUCTURE
+    initializeGenomicElementType("g1", m1, 1.0); //non-coding
+    initializeGenomicElementType("g2", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //GAL7 promoter
+    initializeGenomicElementType("g3", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //GAL10 promoter
+    initializeGenomicElementType("g4", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //GAL1 promoter
+    initializeGenomicElementType("g5", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //GAL1 coding
+    initializeGenomicElementType("g6", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //GAL3 promoter
+    initializeGenomicElementType("g7", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //GAL3 coding
+    initializeGenomicElementType("g8", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //GAL2 promoter
+    initializeGenomicElementType("g9", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //GAL80 promoter
+    initializeGenomicElementType("g10", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //GAL80 coding
+    initializeGenomicElementType("g11", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //GAL5 promoter
+    initializeGenomicElementType("g12", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //GAL4 promoter
+    initializeGenomicElementType("g13", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //GAL4 coding
+
+    //CHROMOSOME STRUCTURE
+    // uniform chromosome of length 100 kb with uniform recombination
+    initializeGenomicElement(g1, 0, 1999);
+    initializeGenomicElement(g2, 2000, 2999); // GAL 7 promoter
+    initializeGenomicElement(g1, 3000, 12999);
+    initializeGenomicElement(g3, 13000, 13999);    //GAL 10 promoter
+    initializeGenomicElement(g1, 14000, 23999);
+    initializeGenomicElement(g4, 24000, 24999);    //GAL 1 promoter
+    initializeGenomicElement(g5, 25000, 29999);     // GAL 1 coding
+    initializeGenomicElement(g1, 30000, 39999);
+    initializeGenomicElement(g6, 40000, 40999);     // GAL 3 promoter
+    initializeGenomicElement(g7, 41000, 45999);    // GAL 3 coding
+    initializeGenomicElement(g1, 46000, 50999);
+    initializeGenomicElement(g8, 51000, 51999);   // GAL 2 promoter
+    initializeGenomicElement(g1, 52000, 61999);
+    initializeGenomicElement(g9, 62000, 62999); // GAL 80 promoter
+    initializeGenomicElement(g10, 63000, 67999);  // GAL 80 coding
+    initializeGenomicElement(g1, 68000, 77999);
+    initializeGenomicElement(g11, 78000, 78999); // GAL 5 promoter
+    initializeGenomicElement(g1, 79000, 88999);
+    initializeGenomicElement(g12, 89000, 89999);    //GAL 4 promoter
+    initializeGenomicElement(g13, 90000, 94999);     // GAL 4 coding
+    initializeGenomicElement(g1, 95000, 99999);
+
+    //COLORCODING CAUSE SLIM DOESNT LIKE THIS MANY ELEMENTS
+    // fun fact: slim knows R colors
+    g1.color = "darkgrey";
+    g2.color = "red";
+    g3.color = "firebrick";
+    g4.color = "mediumorchid";
+    g5.color = "orchid2";
+    g6.color = "saddlebrown";
+    g7.color = "tan3";
+    g8.color = "tomato";
+    g9.color = "chartreuse3";
+    g10.color = "chartreuse1";
+    g11.color = "darkcyan";
+    g12.color = "dodgerblue3";
+    g13.color = "dodgerblue";
+
+initializeRecombinationRate(1e-8);
+}
+
+1 { sim.addSubpop("p1", 500);}
+
+//NOTE: i deleted all the phenotypes out cause theyre buggy af
+
+// output samples of 10 genomes periodically, all fixed mutations at end
+1000 late() { p1.outputSample(10); }
+2000 late() { p1.outputSample(10); }
+2000 late() { sim.outputFixedMutations(); }
+
+2500 late(){
+  print(sim.mutationFrequencies(NULL, sim.mutationsOfType(m2)));
+}
