@@ -1,4 +1,4 @@
-// SLIM MANUAL 13.4 EXERCISE
+// SLIM MANUAL 13.5 EXERCISE
 
 initialize() {
  initializeMutationRate(1e-7);
@@ -56,8 +56,8 @@ for (ind in sim.subpopulations.individuals)
  {
  // construct phenotypes from additive effects of QTL mutations
  muts = ind.genomes.mutationsOfType(m2);
- phenotype0 = size(muts) ? sum(muts.getValue("e0")) else 0.0;
- phenotype1 = size(muts) ? sum(muts.getValue("e1")) else 0.0;
+ phenotype0 = size(muts) // ? sum(muts.getValue("e0")) else 0.0;
+ phenotype1 = size(muts) // ? sum(muts.getValue("e1")) else 0.0;
  ind.setValue("phenotype0", phenotype0);
  ind.setValue("phenotype1", phenotype1);
 
@@ -66,6 +66,15 @@ for (ind in sim.subpopulations.individuals)
  effect1 = 1.0 + dnorm(QTL_optima[1] - phenotype1, 0.0, 20.0) * 10.0;
  ind.fitnessScaling = effect0 * effect1;
  }
+}
+
+1 late() {
+sim.setValue("history", matrix(c(0.0, 0.0), nrow=1));
+ defineConstant("pdfPath", writeTempFile("plot_", ".pdf", ""));
+
+// If we're running in SLiMgui, open a plot window
+if (exists("slimgui"))
+ slimgui.openDocument(pdfPath);
 }
 
 
@@ -142,16 +151,4 @@ for (i in seqAlong(m2muts))
  catn("\nCovariance of effects across all QTL draws: " + cov_drawn);
 
 sim.simulationFinished();
-}
-
-//modification code below ----- most interesting for me
-//should be able to be modified only line 140 needs to be reviewed /modified for independence
-
-1 late() {
-sim.setValue("history", matrix(c(0.0, 0.0), nrow=1));
- defineConstant("pdfPath", writeTempFile("plot_", ".pdf", ""));
-
-// If we're running in SLiMgui, open a plot window
-if (exists("slimgui"))
- slimgui.openDocument(pdfPath);
 }
