@@ -1,0 +1,84 @@
+//VERSION UPDATE: N E W  PHENOTYPE AND FITNESS S
+
+// START COMMANDS - DNI
+// set up a simple neutral simulation
+initialize() {
+initializeMutationRate(1e-8);
+
+//MUTATION TYPES AND RATES
+//remember: the formula is ("name", dominance, "distribution", coefficient for distribution)
+// N mutation type: neutral
+initializeMutationType("m1", 0.5, "e", 0.5);
+// D mutation type: deleterious
+initializeMutationType("m2", 0.1, "e", 0.4);
+// B mutation type: slightly beneficial
+initializeMutationType("m3", 0.2, "e", 0.01);
+m2.convertToSubstitution = F; // to make sure fixed mutations still have an effect
+m3.convertToSubstitution = F;
+m2.color = "red";
+m3.color = "green";
+m1.color = "yellow";
+
+//GENOME STRUCTURE
+// g1 genomic element type: uses m1 for all mutations
+initializeGenomicElementType("g1", m1, 1.0); //non-coding
+initializeGenomicElementType("g2", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //coding
+initializeGenomicElementType("g3", c(m1, m2, m3), c(1.0, 1.0, 1.0)); //promoter
+
+
+//CHROMOSOME STRUCTURE
+// uniform chromosome of length 100 kb with uniform recombination
+initializeGenomicElement(g1, 0, 1999);
+initializeGenomicElement(g3, 2000, 2999); // GAL 7
+initializeGenomicElement(g1, 3000, 12999);
+initializeGenomicElement(g3, 13000, 13999);    //GAL 10
+initializeGenomicElement(g1, 14000, 23999);
+initializeGenomicElement(g3, 24000, 24999);    //GAL 1
+initializeGenomicElement(g2, 25000, 29999);     // GAL 1
+initializeGenomicElement(g1, 30000, 39999);
+initializeGenomicElement(g3, 40000, 40999);     // GAL 3
+initializeGenomicElement(g2, 41000, 45999);    // GAL 3
+initializeGenomicElement(g1, 46000, 50999);
+initializeGenomicElement(g3, 51000, 51999);   // GAL 2
+initializeGenomicElement(g1, 52000, 61999);
+initializeGenomicElement(g3, 62000, 62999); // GAL 80
+initializeGenomicElement(g2, 63000, 67999);  // GAL 80
+initializeGenomicElement(g1, 68000, 77999);
+initializeGenomicElement(g3, 78000, 78999); // GAL 5
+initializeGenomicElement(g1, 79000, 88999);
+initializeGenomicElement(g3, 89000, 89999);    //GAL 4
+initializeGenomicElement(g2, 90000, 99999);     // GAL 4
+
+initializeRecombinationRate(1e-8);
+}
+ 
+// create a population of 500 individuals
+
+
+//phenotype magic
+fitness(m2) {return -0.5; }
+fitness(m1) {return 0.0; }
+fitness(m3) {return 0.5; }
+
+1 { sim.addSubpop("p1", 500);}
+1: late() {
+    inds = sim.subpopulations.individuals;
+    pheno1 =
+    pheno2
+    pheno3
+    phenotypes = inds.sumOfMutationsOfType(m2);
+    inds.fitnessScaling = 1.5 - (phenotypes - 10.0)^2 * 0.005;
+
+    if (sim.generation % 100 == 0)
+      catn(sim.generation + ": Mean phenotype == " + mean (phenotypes));
+}
+
+
+// output samples of 10 genomes periodically, all fixed mutations at end
+1000 late() { p1.outputSample(10); }
+2000 late() { p1.outputSample(10); }
+2000 late() { sim.outputFixedMutations(); }
+
+2500 late(){
+  print(sim.mutationFrequencies(NULL, sim.mutationsOfType(m2)));
+}
