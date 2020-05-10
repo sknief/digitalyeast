@@ -10,29 +10,37 @@ initializeMutationRate(1e-8);
   // N mutation type: neutral
     initializeMutationType("m1", 0.5, "f", 0.0);
     m1.color = "yellow";
-  // D mutation type: deleterious
+  // [CIS] D mutation type: deleterious
     initializeMutationType("m2", 0.5, "e", 0.4);
     m2.convertToSubstitution = F; // to make sure fixed mutations still have an effect
     m2.color = "red";
-  // B mutation type: slightly beneficial
+  // [CIS] B mutation type: slightly beneficial
     initializeMutationType("m3", 0.5, "g", 0.5, 1.0);
     m3.convertToSubstitution = F;
     m3.color = "green";
+  // [TRANS] D mutation type: deleterious
+    initializeMutationType("m4", 0.5, "e", 0.4);
+    m2.convertToSubstitution = F;
+    m2.color = "pink";
+  // [TRANS] B mutation type: slightly beneficial
+    initializeMutationType("m5", 0.5, "g", 0.5, 1.0);
+    m3.convertToSubstitution = F;
+    m3.color = "lightblue";
 
     //GENOME STRUCTURE
   	initializeGenomicElementType("g1", m1, 1.0); //non-coding
   	initializeGenomicElementType("g2", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL7 promoter
   	initializeGenomicElementType("g3", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL10 promoter
-  	initializeGenomicElementType("g4", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL1 promoter
-  	initializeGenomicElementType("g5", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL1 coding
-  	initializeGenomicElementType("g6", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL3 promoter
-  	initializeGenomicElementType("g7", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL3 coding
+  	initializeGenomicElementType("g4", c(m1, m4, m5), c(0.9, 0.05, 0.05)); //GAL1 promoter
+  	initializeGenomicElementType("g5", c(m1, m4, m5), c(0.9, 0.05, 0.05)); //GAL1 coding
+  	initializeGenomicElementType("g6", c(m1, m4, m5), c(0.9, 0.05, 0.05)); //GAL3 promoter
+  	initializeGenomicElementType("g7", c(m1, m4, m5), c(0.9, 0.05, 0.05)); //GAL3 coding
   	initializeGenomicElementType("g8", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL2 promoter
-  	initializeGenomicElementType("g9", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL80 promoter
-  	initializeGenomicElementType("g10", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL80 coding
+  	initializeGenomicElementType("g9", c(m1, m4, m5), c(0.9, 0.05, 0.05)); //GAL80 promoter
+  	initializeGenomicElementType("g10", c(m1, m4, m5), c(0.9, 0.05, 0.05)); //GAL80 coding
   	initializeGenomicElementType("g11", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL5 promoter
-  	initializeGenomicElementType("g12", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL4 promoter
-  	initializeGenomicElementType("g13", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL4 coding
+  	initializeGenomicElementType("g12", c(m1, m4, m5), c(0.9, 0.05, 0.05)); //GAL4 promoter
+  	initializeGenomicElementType("g13", c(m1, m4, m5), c(0.9, 0.05, 0.05)); //GAL4 coding
 
     //CHROMOSOME STRUCTURE
     // uniform chromosome of length 100 kb with uniform recombination
