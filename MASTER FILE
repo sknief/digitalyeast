@@ -79,6 +79,12 @@ initializeRecombinationRate(1e-8);
 defineConstant("QTL_optima", c(0.0, 20.0));
 }
 
+1 late() {
+sim.addSubpop("p1", 500);
+}
+
+
+
 //NEWLY WRITTEN EXPERIMENTAL CODE
 late() {
 for (ind in sim.subpopulations.individuals)
@@ -118,7 +124,7 @@ if (sim.generation % 1000 != 0)
  inds = sim.subpopulations.individuals;
  p0_mean = mean(inds.getValue("phenotype0"));
  p1_mean = mean(inds.getValue("phenotype1"));
- fit_mean = mean(ind.fitnessScaling);
+ fit_mean = mean(inds.fitnessScaling);
 
  catn();
  catn("Generation: " + sim.generation);
@@ -154,7 +160,7 @@ if (sim.generation % 1000 != 0)
 
 //output? what output?
 
- sim.simulationFinished();
+ //sim.simulationFinished();
  }
 
 //last bit of pdf work
