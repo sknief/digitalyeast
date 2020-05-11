@@ -1,4 +1,4 @@
 
 *.slim linguist-detectable
-*.slim linguist-language=Other
+*.slim linguist-language=Slim
 
