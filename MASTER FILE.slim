@@ -178,6 +178,7 @@ late() {
 }
 
 //FUNCTIONALITY code
+1:20000 () {
   //step one: environment
     defineConstant("glucoseFixed", 0.5) //fixed version
     glucvar = dnorm(2.0, 0.0, 1.0) //parameters can be changed
@@ -237,23 +238,21 @@ late() {
     meanGal80 = mean(inds.getValue("Gal80_Binding_Affinity"));
     //GAL 80 blocks GAL1 but that doesnt really matter? Slash i am assuming glactose to be present
 
-//FIX NUMBERS FROM HERE ON DOWN !!!!!!!! TASK FOR DAYLIGHT
-
     //Gal3
-    if galactose >= 15 { //high galactose
-      gal80pd = ind.g9.mutationsOfType(m4); //gal 80 promoter deleterious
-      gal80pb = ind.g9.mutationsOfType(m5); //gal 80 promoter beneficial
-      gal80cd = ind.g10.mutationsOfType(m4); //gal 80 coding deleterious
-      gal80cb = ind.g10.mutationsOfType(m5); //gal 80 coding beneficial
+    if galactose >= 15 { //high galactose present
+      gal3pd = ind.g6.mutationsOfType(m4); //gal 3 promoter deleterious
+      gal3pb = ind.g6.mutationsOfType(m5); //gal 3 promoter beneficial
+      gal3cd = ind.g7.mutationsOfType(m4); //gal 3 coding deleterious
+      gal3cb = ind.g7.mutationsOfType(m5); //gal 3 coding beneficial
 
-      sgal80pd = size(gal80pd); //gal 80 promoter deleterious
-      sgal80pb = size(gal80pb); //gal 80 promoter beneficial
-      sgal80cd = size(gal80cd); //gal 80 coding deleterious
-      sgal80cb = size(gal80cb); //gal 80 coding beneficial
+      sgal3pd = size(gal3pd); //gal 3 promoter deleterious
+      sgal3pb = size(gal3pb); //gal 3 promoter beneficial
+      sgal3cd = size(gal3cd); //gal 3 coding deleterious
+      sgal3cb = size(gal3cb); //gal 3 coding beneficial
 
-      gal80effect = ((sgal80cd + sgal80cb + sgal80pb + sgal80pd) / 4) + 5; //doesnt depend on previous genes, high basal levels
-      ind.setValue = ("Gal80_Binding_Affinity", gal80effect);
-      meanGal80 = mean(inds.getValue("Gal80_Binding_Affinity"));
+      gal3effect = ((sgal3cd + sgal3cb + sgal3pb + sgal3pd) / 4) + 5; //doesnt depend on previous genes, high basal levels
+      ind.setValue = ("Gal3_Binding_Affinity", gal3effect);
+      meanGal3 = mean(inds.getValue("Gal3_Binding_Affinity"));
 
     else
         catn();
@@ -263,60 +262,84 @@ late() {
     }
 
     //Next is GAL1 again technically
-      //add selection code here, if sum of 1 80 3 is below value, kill individual
+      //add selection code here, if sum of 1 80 3 is below specified value, kill individual
       //otherwise just continue on (else return?)
 
       leloir = (gal80effect + gal1effect + gal3effect) / 3;
       ind.setValue = ("Complex_Value", leloir);
+    //
+
     //the next genes are for the leloir pathway, these depend on the previous one and gal 1
     //Add code for lethality with selection + offspring updates
 
     //GAL2
-    gal80pd = ind.g9.mutationsOfType(m4); //gal 80 promoter deleterious
-    gal80pb = ind.g9.mutationsOfType(m5); //gal 80 promoter beneficial
+    gal2pd = ind.g8.mutationsOfType(m2); //gal 2 promoter deleterious
+    gal2pb = ind.g8.mutationsOfType(m3); //gal 2 promoter beneficial
 
-    gal80effect = (((sgal80cd + sgal80cb ) / 2) + 5) / (leloir / 5);
-    ind.setValue = ("Gal80_Binding_Affinity", gal80effect);
-    meanGal80 = mean(inds.getValue("Gal80_Binding_Affinity"));
+    sgal2pd = size(gal2pd); //gal 2 promoter deleterious
+    sgal2pb = size(gal2pb); //gal 2 promoter beneficial
+
+    gal2effect = (((sgal2pd + sgal2pb ) / 2) + 5) / (leloir / 5);
+    ind.setValue = ("Gal2_Binding_Affinity", gal2effect);
+    meanGal2 = mean(inds.getValue("Gal2_Binding_Affinity"));
 
     //GAL1 Gal1 again
 
     //GAL7
-    gal80pd = ind.g9.mutationsOfType(m4); //gal 80 promoter deleterious
-    gal80pb = ind.g9.mutationsOfType(m5); //gal 80 promoter beneficial
+    gal7pd = ind.g2.mutationsOfType(m2); //gal 7 promoter deleterious
+    gal7pb = ind.g2.mutationsOfType(m3); //gal 7 promoter beneficial
 
-    gal80effect = (((sgal80cd + sgal80cb ) / 2) + 4) + (gal2effect / 5) / (leloir / 5);
-    ind.setValue = ("Gal80_Binding_Affinity", gal80effect);
-    meanGal80 = mean(inds.getValue("Gal80_Binding_Affinity"));
+    sgal7pd = size(gal7pd); //gal 7 promoter deleterious
+    sgal7pb = size(gal7pb); //gal 7 promoter beneficial
+
+    gal7effect = (((sgal7pd + sgal7pb ) / 2) + 4) + (gal2effect / 5) / (leloir / 5);
+    ind.setValue = ("Gal7_Binding_Affinity", gal7effect);
+    meanGal7 = mean(inds.getValue("Gal7_Binding_Affinity"));
 
     //GAL 10
-    gal80pd = ind.g9.mutationsOfType(m4); //gal 80 promoter deleterious
-    gal80pb = ind.g9.mutationsOfType(m5); //gal 80 promoter beneficial
+    gal10pd = ind.g3.mutationsOfType(m2); //gal 10 promoter deleterious
+    gal10pb = ind.g3.mutationsOfType(m3); //gal 10 promoter beneficial
 
-  gal80effect = (((sgal80cd + sgal80cb ) / 2) + 4) + (gal7effect / 5) / (leloir / 5);
-    ind.setValue = ("Gal80_Binding_Affinity", gal80effect);
-    meanGal80 = mean(inds.getValue("Gal80_Binding_Affinity"));
+    sgal10pd = size(gal10pd); //gal 10 promoter deleterious
+    sgal10pb = size(gal10pb); //gal 10 promoter beneficial
+
+    gal10effect = (((sgal10pd + sgal10pb ) / 2) + 4) + (gal7effect / 5) / (leloir / 5);
+    ind.setValue = ("Gal10_Binding_Affinity", gal10effect);
+    meanGal10 = mean(inds.getValue("Gal10_Binding_Affinity"));
 
     //GAL5
 
-    gal80pd = ind.g9.mutationsOfType(m4); //gal 80 promoter deleterious
-    gal80pb = ind.g9.mutationsOfType(m5); //gal 80 promoter beneficial
+    gal5pd = ind.g11.mutationsOfType(m2); //gal 5 promoter deleterious
+    gal5pb = ind.g11.mutationsOfType(m3); //gal 5 promoter beneficial
 
-  gal80effect = (((sgal80cd + sgal80cb ) / 2) + 4) + (gal10effect / 5) / (leloir / 5);
-    ind.setValue = ("Gal80_Binding_Affinity", gal80effect);
-    meanGal80 = mean(inds.getValue("Gal80_Binding_Affinity"));
+    sgal5pd = size(gal5pd); //gal 5 promoter deleterious
+    sgal5pb = size(gal5pb); //gal 5 promoter beneficial
+
+    gal5effect = (((sgal5pd + sgal5pb ) / 2) + 4) + (gal10effect / 5) / (leloir / 5);
+    ind.setValue = ("Gal5_Binding_Affinity", gal5effect);
+    meanGal5 = mean(inds.getValue("Gal5_Binding_Affinity"));
 
     //Finally, total network function is the sum of all of the above,
-      //to be defined tmrw
+    network = ((meanGal7 + meanGal0 + meanGal1 + meanGal2 + meanGal3 + meanGal4 + meanGal5 + meanGal80) / 40) * 100)
 
 
-  //ouput code for above network functionality: UPDATE!!!
+    //ouput code for above network functionality: UPDATE!!!
     catn();
     catn("Mean Gal4 Binding Affinity: " + meanGal4);
     catn("Mean Gal1 Binding Affinity: " + meanGal1);
+    catn("Mean Gal80 Binding Affinity: " + meanGal80);
+    catn("Mean Gal3 Binding Affinity: " + meanGal3);
+    catn("Mean Gal2 Binding Affinity: " + meanGal2);
+    catn("Mean Gal7 Binding Affinity: " + meanGal7);
+    catn("Mean Gal10 Binding Affinity: " + meanGal0);
+    catn("Mean Gal5 Binding Affinity: " + meanGal5);
+    catn("Mean Network functionality: " + network);
+
   }
+
   else {
     catn();
     catn("Great Conditions! No competition and no selective pressure");
   //normal offspring generation code, no selection and no mortality
-  }
+  } //else bracket ends here
+}
