@@ -1,4 +1,4 @@
 
 *.slim linguist-detectable=true
-*.slim linguist-language=Other
+*.slim linguist-language=Eidos
 
