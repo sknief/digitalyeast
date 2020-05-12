@@ -354,7 +354,11 @@ reproduction() {
   } //else bracket ends here
 }
 
-
+//Callback for if they all die
+late() {
+if (sum(sim.individualCount) == 0)
+ stop("Complete extinction in generation " + sim.generation + ".");
+ }
 
 //HAPLOID CLONAL CODE: REMOVAL OF NEUTRAL MUTATIONS
 late() {
@@ -363,6 +367,9 @@ late() {
   if (any(freqs == 0.5))
     sim.subpopulations.genomes.removeMutations(muts[freqs == 0.5], T);
 }
+
+
+//     HISTORY PLOT CODE FOLLOWS
 
 //FITNESS AND PHENOTYPE CODE (to be patched up)
 late() {
