@@ -1,7 +1,10 @@
-// Tentative Fitness Model based on 1.2.2 and Slim Manual 13.5
+//Genetic Modelling Code, Author: Stella MS Knief
 
 // START COMMANDS - DNI
 initialize() {
+  initializeSLiMModelType("nonWF");
+  defineConstant("K", 500);
+
   initializeMutationRate(1e-8);
   initializeRecombinationRate(1e-8);
 
@@ -11,67 +14,51 @@ initialize() {
   m1.color = "yellow";
   // [CIS] GAL7 deleterious
   initializeMutationType("m2", 0.5, "e", 0.4);
-  m2.convertToSubstitution = F; // to make sure fixed mutations still have an effect
   m2.color = "red";
   // [CIS] GAL7 slightly beneficial
   initializeMutationType("m3", 0.5, "g", 0.5, 1.0);
-  m3.convertToSubstitution = F;
   m3.color = "green";
   // [CIS] GAL10 deleterious
   initializeMutationType("m4", 0.5, "e", 0.4);
-  m4.convertToSubstitution = F; // to make sure fixed mutations still have an effect
   m4.color = "red";
   // [CIS] GAL10 slightly beneficial
   initializeMutationType("m5", 0.5, "g", 0.5, 1.0);
-  m5.convertToSubstitution = F;
   m5.color = "green";
   // [TRANS] GAL1 deleterious
   initializeMutationType("m6", 0.5, "e", 0.4);
-  m6.convertToSubstitution = F;
   m6.color = "pink";
   // [TRANS] GAL1 slightly beneficial
   initializeMutationType("m7", 0.5, "g", 0.5, 1.0);
-  m7.convertToSubstitution = F;
   m7.color = "lightblue";
   // [TRANS] GAL3 deleterious
   initializeMutationType("m8", 0.5, "e", 0.4);
-  m8.convertToSubstitution = F;
   m8.color = "pink";
   // [TRANS] GAL3 slightly beneficial
   initializeMutationType("m9", 0.5, "g", 0.5, 1.0);
-  m9.convertToSubstitution = F;
   m9.color = "lightblue";
   // [CIS] GAL2 deleterious
   initializeMutationType("m10", 0.5, "e", 0.4);
-  m10.convertToSubstitution = F; // to make sure fixed mutations still have an effect
   m10.color = "red";
   // [CIS] GAL2 slightly beneficial
   initializeMutationType("m11", 0.5, "g", 0.5, 1.0);
-  m11.convertToSubstitution = F;
   m11.color = "green";
   // [TRANS] GAL80 deleterious
   initializeMutationType("m12", 0.5, "e", 0.4);
-  m12.convertToSubstitution = F;
   m12.color = "pink";
   // [TRANS] GAL80 slightly beneficial
   initializeMutationType("m13", 0.5, "g", 0.5, 1.0);
-  m13.convertToSubstitution = F;
   m13.color = "lightblue";
   // [CIS] GAL5 deleterious
   initializeMutationType("m14", 0.5, "e", 0.4);
-  m14.convertToSubstitution = F; // to make sure fixed mutations still have an effect
   m14.color = "red";
   // [CIS] GAL5 slightly beneficial
   initializeMutationType("m15", 0.5, "g", 0.5, 1.0);
-  m15.convertToSubstitution = F;
   m15.color = "green";
   // [TRANS] GAL4 deleterious
   initializeMutationType("m16", 0.5, "e", 0.4);
-  m16.convertToSubstitution = F;
   m16.color = "pink";
   // [TRANS] GAL4 slightly beneficial
   initializeMutationType("m17", 0.5, "g", 0.5, 1.0);
-  m17.convertToSubstitution = F;
   m17.color = "lightblue";
 
   //GENOMIC ELEMENTS
@@ -143,10 +130,27 @@ initialize() {
  //
 } //initialize command bracket ends here
 
+//nonWF REPRODUCTION CODE: HAPLOID VERSION
+reproduction() {
+  subpop.addRecombinant(genome1, NULL, NULL, NULL, NULL, NULL);
+}
+
 //POPULATION CODE
-1 late() {
-  sim.addSubpop("p1", 500);
- // TO BE ADDED: Offspring production
+1 early() {
+  sim.addSubpop("p1", 200);
+}
+
+//FITNESS SCALING
+early() {
+  p1.fitnessScaling = K / p1.individualCount;
+}
+
+//HAPLOID CLONAL CODE: REMOVAL OF NEUTRAL MUTATIONS
+late() {
+  muts = sim.mutationsOfType(m1);
+  freqs = sim.mutationFrequencies(NULL, muts);
+  if (any(freqs == 0.5))
+    sim.subpopulations.genomes.removeMutations(muts[freqs == 0.5], T);
 }
 
 //FITNESS AND PHENOTYPE CODE (to be patched up)
