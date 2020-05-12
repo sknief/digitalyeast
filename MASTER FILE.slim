@@ -1,47 +1,80 @@
-// Tentative Fitness Model based on 1.2.2 and Slim Manual 13.5
+//Genetic Modelling Code, Author: Stella MS Knief
 
 // START COMMANDS - DNI
 initialize() {
+  initializeSLiMModelType("nonWF");
+  defineConstant("K", 500);
+
   initializeMutationRate(1e-8);
   initializeRecombinationRate(1e-8);
 
- //MUTATION TYPES AND RATES
-  // N mutation type: neutral
-    initializeMutationType("m1", 0.5, "f", 0.0);
-    m1.color = "yellow";
-  // [CIS] D mutation type: deleterious
-    initializeMutationType("m2", 0.5, "e", 0.4);
-    m2.convertToSubstitution = F; // to make sure fixed mutations still have an effect
-    m2.color = "red";
-  // [CIS] B mutation type: slightly beneficial
-    initializeMutationType("m3", 0.5, "g", 0.5, 1.0);
-    m3.convertToSubstitution = F;
-    m3.color = "green";
-
-  // [TRANS] D mutation type: deleterious
-    initializeMutationType("m4", 0.5, "e", 0.4);
-    m2.convertToSubstitution = F;
-    m2.color = "pink";
-  // [TRANS] B mutation type: slightly beneficial
-    initializeMutationType("m5", 0.5, "g", 0.5, 1.0);
-    m3.convertToSubstitution = F;
-    m3.color = "lightblue";
-  //
+  //ALTERNATIVE MUTATION TYPES AND RATES(SEE NOTES)
+  //N mutation type: neutral
+  initializeMutationType("m1", 0.5, "f", 0.0);
+  m1.color = "yellow";
+  // [CIS] GAL7 deleterious
+  initializeMutationType("m2", 0.5, "e", 0.4);
+  m2.color = "red";
+  // [CIS] GAL7 slightly beneficial
+  initializeMutationType("m3", 0.5, "g", 0.5, 1.0);
+  m3.color = "green";
+  // [CIS] GAL10 deleterious
+  initializeMutationType("m4", 0.5, "e", 0.4);
+  m4.color = "red";
+  // [CIS] GAL10 slightly beneficial
+  initializeMutationType("m5", 0.5, "g", 0.5, 1.0);
+  m5.color = "green";
+  // [TRANS] GAL1 deleterious
+  initializeMutationType("m6", 0.5, "e", 0.4);
+  m6.color = "pink";
+  // [TRANS] GAL1 slightly beneficial
+  initializeMutationType("m7", 0.5, "g", 0.5, 1.0);
+  m7.color = "lightblue";
+  // [TRANS] GAL3 deleterious
+  initializeMutationType("m8", 0.5, "e", 0.4);
+  m8.color = "pink";
+  // [TRANS] GAL3 slightly beneficial
+  initializeMutationType("m9", 0.5, "g", 0.5, 1.0);
+  m9.color = "lightblue";
+  // [CIS] GAL2 deleterious
+  initializeMutationType("m10", 0.5, "e", 0.4);
+  m10.color = "red";
+  // [CIS] GAL2 slightly beneficial
+  initializeMutationType("m11", 0.5, "g", 0.5, 1.0);
+  m11.color = "green";
+  // [TRANS] GAL80 deleterious
+  initializeMutationType("m12", 0.5, "e", 0.4);
+  m12.color = "pink";
+  // [TRANS] GAL80 slightly beneficial
+  initializeMutationType("m13", 0.5, "g", 0.5, 1.0);
+  m13.color = "lightblue";
+  // [CIS] GAL5 deleterious
+  initializeMutationType("m14", 0.5, "e", 0.4);
+  m14.color = "red";
+  // [CIS] GAL5 slightly beneficial
+  initializeMutationType("m15", 0.5, "g", 0.5, 1.0);
+  m15.color = "green";
+  // [TRANS] GAL4 deleterious
+  initializeMutationType("m16", 0.5, "e", 0.4);
+  m16.color = "pink";
+  // [TRANS] GAL4 slightly beneficial
+  initializeMutationType("m17", 0.5, "g", 0.5, 1.0);
+  m17.color = "lightblue";
 
   //GENOMIC ELEMENTS
   	initializeGenomicElementType("g1", m1, 1.0); //non-coding
   	initializeGenomicElementType("g2", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL7 promoter
-  	initializeGenomicElementType("g3", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL10 promoter
-  	initializeGenomicElementType("g4", c(m1, m4, m5), c(0.9, 0.05, 0.05)); //GAL1 promoter
-  	initializeGenomicElementType("g5", c(m1, m4, m5), c(0.9, 0.05, 0.05)); //GAL1 coding
-  	initializeGenomicElementType("g6", c(m1, m4, m5), c(0.9, 0.05, 0.05)); //GAL3 promoter
-  	initializeGenomicElementType("g7", c(m1, m4, m5), c(0.9, 0.05, 0.05)); //GAL3 coding
-  	initializeGenomicElementType("g8", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL2 promoter
-  	initializeGenomicElementType("g9", c(m1, m4, m5), c(0.9, 0.05, 0.05)); //GAL80 promoter
-  	initializeGenomicElementType("g10", c(m1, m4, m5), c(0.9, 0.05, 0.05)); //GAL80 coding
-  	initializeGenomicElementType("g11", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL5 promoter
-  	initializeGenomicElementType("g12", c(m1, m4, m5), c(0.9, 0.05, 0.05)); //GAL4 promoter
-  	initializeGenomicElementType("g13", c(m1, m4, m5), c(0.9, 0.05, 0.05)); //GAL4 coding
+  	initializeGenomicElementType("g3", c(m1, m4, m5), c(0.9, 0.05, 0.05)); //GAL10 promoter
+  	initializeGenomicElementType("g4", c(m1, m6, m7), c(0.9, 0.05, 0.05)); //GAL1 promoter
+  	initializeGenomicElementType("g5", c(m1, m6, m7), c(0.9, 0.05, 0.05)); //GAL1 coding
+  	initializeGenomicElementType("g6", c(m1, m8, m9), c(0.9, 0.05, 0.05)); //GAL3 promoter
+  	initializeGenomicElementType("g7", c(m1, m8, m9), c(0.9, 0.05, 0.05)); //GAL3 coding
+  	initializeGenomicElementType("g8", c(m1, m10, m11), c(0.9, 0.05, 0.05)); //GAL2 promoter
+  	initializeGenomicElementType("g9", c(m1, m12, m13), c(0.9, 0.05, 0.05)); //GAL80 promoter
+  	initializeGenomicElementType("g10", c(m1, m12, m13), c(0.9, 0.05, 0.05)); //GAL80 coding
+  	initializeGenomicElementType("g11", c(m1, m14, m15), c(0.9, 0.05, 0.05)); //GAL5 promoter
+  	initializeGenomicElementType("g12", c(m1, m16, m17), c(0.9, 0.05, 0.05)); //GAL4 promoter
+  	initializeGenomicElementType("g13", c(m1, m16, m17), c(0.9, 0.05, 0.05)); //GAL4 coding
  //
 
  //CHROMOSOME STRUCTURE
@@ -86,14 +119,38 @@ initialize() {
  //
 
  //CONSTANTS AND VALUES
+ //FUNCTIONALITY:: step one: environment
+ defineConstant("glucoseFixed", 0.5); //fixed version
+ glucvar = dnorm(2.0, 0.0, 1.0); //parameters can be changed
+ defineConstant("glucoseVar", glucvar); //variable version
+ defineConstant("galactose", 20.0); //fixed, but putting it here for future functionality
+
+
   defineConstant("QTL_optima", c(0.0, 20.0));
  //
 } //initialize command bracket ends here
 
+//nonWF REPRODUCTION CODE: HAPLOID VERSION
+reproduction() {
+  subpop.addRecombinant(genome1, NULL, NULL, NULL, NULL, NULL);
+}
+
 //POPULATION CODE
-1 late() {
-  sim.addSubpop("p1", 500);
- // TO BE ADDED: Offspring production
+1 early() {
+  sim.addSubpop("p1", 200);
+}
+
+//FITNESS SCALING
+early() {
+  p1.fitnessScaling = K / p1.individualCount;
+}
+
+//HAPLOID CLONAL CODE: REMOVAL OF NEUTRAL MUTATIONS
+late() {
+  muts = sim.mutationsOfType(m1);
+  freqs = sim.mutationFrequencies(NULL, muts);
+  if (any(freqs == 0.5))
+    sim.subpopulations.genomes.removeMutations(muts[freqs == 0.5], T);
 }
 
 //FITNESS AND PHENOTYPE CODE (to be patched up)
@@ -177,18 +234,13 @@ late() {
   slimgui.openDocument(pdfPath);
 }
 
-//FUNCTIONALITY code
+//FUNCTIONALITY code (BASIC BUT FUNCTIONAL)
 1:20000 () {
-  //step one: environment
-    defineConstant("glucoseFixed", 0.5) //fixed version
-    glucvar = dnorm(2.0, 0.0, 1.0) //parameters can be changed
-    defineConstant("glucoseVar", glucvar //variable version
-
-    defineConstant("galactose", 20.0) //fixed, but putting it here for future functionality
-
   //step 2: environmental dependence
-  if glucosefixed <= 0.5 {
-  //network and population fitness will change cause selective pressure is gonna kick in
+  if (glucoseFixed <= 0.5) {
+    for (ind in sim.subpopulations.individuals) {
+
+   //network and population fitness will change cause selective pressure is gonna kick in
     //GAL 4 gets activated, first place of activity
     gal4pd = ind.g12.mutationsOfType(m4); //gal 4 promoter deleterious
     gal4pb = ind.g12.mutationsOfType(m5); //gal 4 promoter beneficial
@@ -321,7 +373,7 @@ late() {
 
     //Finally, total network function is the sum of all of the above,
     network = ((meanGal7 + meanGal0 + meanGal1 + meanGal2 + meanGal3 + meanGal4 + meanGal5 + meanGal80) / 40) * 100)
-
+    //note: maybe refine code so that population doesnt start at 100%
 
     //ouput code for above network functionality: UPDATE!!!
     catn();
@@ -333,7 +385,7 @@ late() {
     catn("Mean Gal7 Binding Affinity: " + meanGal7);
     catn("Mean Gal10 Binding Affinity: " + meanGal0);
     catn("Mean Gal5 Binding Affinity: " + meanGal5);
-    catn("Mean Network functionality: " + network);
+    catn("Mean Network functionality: " + network + "%");
 
   }
 
