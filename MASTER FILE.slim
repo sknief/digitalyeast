@@ -282,14 +282,11 @@ reproduction() {
     sgal7pd = size(gal7pd); //gal 7 promoter deleterious
     sgal7pb = size(gal7pb); //gal 7 promoter beneficial
 
-    gal7effect = (((sgal7pd + sgal7pb ) / 2) + 4) + (gal2effect / 5) / (leloir / 5);
-    ind.setValue("Gal7_Binding_Affinity", gal7effect);
-
     gal7effect = ((5 - (sgal7pd) + (sgal7pb)) / (leloir)) * 5;
     ind.setValue("Gal7_Binding_Affinity", gal7effect);
     if (gal7ffect <= 4)
       ind.fitnessScaling = 0.0; //lethal mutation
-    else 
+    else
       ind.fitnessScaling = (gal7effect/10) + 0.5;
 
     meanGal7 = mean(ind.getValue("Gal7_Binding_Affinity"));
@@ -301,8 +298,13 @@ reproduction() {
     sgal10pd = size(gal10pd); //gal 10 promoter deleterious
     sgal10pb = size(gal10pb); //gal 10 promoter beneficial
 
-    gal10effect = (((sgal10pd + sgal10pb ) / 2) + 4) + (gal7effect / 5) / (leloir / 5);
+    gal10effect = ((5 - (sgal10pd) + (sgal10pb)) / (leloir)) * 5;
     ind.setValue("Gal10_Binding_Affinity", gal10effect);
+    if (gal10effect <= 4)
+      ind.fitnessScaling = 0.0; //lethal mutation
+    else
+      ind.fitnessScaling = (gal10effect/10) + 0.5;
+
     meanGal10 = mean(ind.getValue("Gal10_Binding_Affinity"));
 
     //GAL5
@@ -315,6 +317,14 @@ reproduction() {
 
     gal5effect = (((sgal5pd + sgal5pb ) / 2) + 4) + (gal10effect / 5) / (leloir / 5);
     ind.setValue("Gal5_Binding_Affinity", gal5effect);
+
+    gal5effect = ((5 - (sgal5pd) + (sgal5pb)) / (leloir)) * 5;
+    ind.setValue("Gal5_Binding_Affinity", gal5effect);
+    if (gal5effect <= 4)
+      ind.fitnessScaling = 0.3; //nonlethal mutation
+    else
+      ind.fitnessScaling = (gal5effect/10) + 0.5;
+
     meanGal5 = mean(ind.getValue("Gal5_Binding_Affinity"));
 
     //Finally, total network function is the sum of all of the above,
