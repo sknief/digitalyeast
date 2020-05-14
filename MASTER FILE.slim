@@ -132,28 +132,31 @@ initialize() {
 
 //nonWF REPRODUCTION CODE: HAPLOID VERSION
 reproduction() {
-  subpop.addRecombinant(genome1, NULL, NULL, NULL, NULL, NULL);
+if (sim.generation % 100 == 0)
+  subpop.addSelfed(subpop.sampleIndividuals(1));
 }
 
 //POPULATION CODE
 1 early() {
   sim.addSubpop("p1", 200);
+  sim.subpopulations.individuals.tag = 1;
 }
 
-//FITNESS SCALING: Redundant?
-//early() {
-//  p1.fitnessScaling = K / p1.individualCount;
-//}
+//wanna get rid of this asap
+early() {
+  p1.fitnessScaling = K / p1.individualCount;
+}
 
-//FUNCTIONALITY code (NOW WITH MORTALITY)
+
+
+//FUNCTIONALITY code (REVISED)
 1:20000 early() {
   //step 2: environmental dependence
   if (glucoseFixed <= 0.5) {
-    for (ind in sim.subpopulations.individuals) {
+    for (ind in p1.individuals) {
 
     //step 3: gene functionality
-
-    //NOTE:  YES THERES SOMEREDUNANDCY BUT THATS FOR FUTURE REFINEMENT OF THE CODE (more mutation rates that split promoter + coding reg)
+    //NOTE:  YES THERES SOME REDUNANDCY BUT THATS FOR FUTURE REFINEMENT OF THE CODE (more mutation rates that split promoter + coding reg)
 
     //GAL 4 gets activated, first place of activity
     gal4pd = ind.genomes.mutationsOfType(m4); //gal 4 promoter deleterious
@@ -169,7 +172,7 @@ reproduction() {
     gal4effect = 5 - (sgal4cd + sgal4pd) + (sgal4pb + sgal4cb);
     ind.setValue("Gal4_Binding_Affinity", gal4effect);
     if (gal4effect <= 4)
-      ind.fitnessScaling = 0.0; //die at gal4effect being 4
+      ind.tag = 0; //die at gal4effect being 4
     else
       ind.fitnessScaling = (gal4effect/10) + 0.5;
 
@@ -190,7 +193,7 @@ reproduction() {
     gal1effect = ((5 - (sgal1cd + sgal1pd) + (sgal1pb + sgal1cb)) / (gal4effect)) * 5;
     ind.setValue("Gal4_Binding_Affinity", gal4effect);
     if (gal4effect <= 4)
-      ind.fitnessScaling = 0.0; //lethal mutation
+      ind.tag = 0; //lethal mutation
     else
       ind.fitnessScaling = (gal1effect/10) + 0.5;
 
@@ -267,7 +270,7 @@ reproduction() {
     gal2effect = ((5 - (sgal2pd) + (sgal2pb)) / (leloir)) * 5;
     ind.setValue("Gal2_Binding_Affinity", gal2effect);
     if (gal2ffect <= 4)
-      ind.fitnessScaling = 0.0; //lethal mutation
+      ind.tag = 0; //lethal mutation
     else
       ind.fitnessScaling = (gal2effect/10) + 0.5;
 
@@ -285,7 +288,7 @@ reproduction() {
     gal7effect = ((5 - (sgal7pd) + (sgal7pb)) / (leloir)) * 5;
     ind.setValue("Gal7_Binding_Affinity", gal7effect);
     if (gal7ffect <= 4)
-      ind.fitnessScaling = 0.0; //lethal mutation
+      ind.tag; = 0.0; //lethal mutation
     else
       ind.fitnessScaling = (gal7effect/10) + 0.5;
 
@@ -301,7 +304,7 @@ reproduction() {
     gal10effect = ((5 - (sgal10pd) + (sgal10pb)) / (leloir)) * 5;
     ind.setValue("Gal10_Binding_Affinity", gal10effect);
     if (gal10effect <= 4)
-      ind.fitnessScaling = 0.0; //lethal mutation
+      ind.tag = 0.0; //lethal mutation
     else
       ind.fitnessScaling = (gal10effect/10) + 0.5;
 
@@ -332,6 +335,7 @@ reproduction() {
     //note: maybe refine code so that population doesnt start at 100%
 
     //ouput code for above network functionality: UPDATE!!!
+    catn("Individual number: " + individualIndex);
     catn();
     catn("Mean Gal4 Binding Affinity: " + meanGal4);
     catn("Mean Gal1 Binding Affinity: " + meanGal1);
@@ -354,20 +358,34 @@ reproduction() {
   } //else bracket ends here
 }
 
+
+fitness(NULL) {
+// individuals tagged for death die here
+if (individual.tag == 1)
+ return 1.0;
+else
+ return 0.0;
+}
+
+
+1000 late() { sim.outputFull(); }
+
+//      LATE CALL BACKS HERE BY
+
 //Callback for if they all die
 late() {
 if (sum(sim.individualCount) == 0)
  stop("Complete extinction in generation " + sim.generation + ".");
  }
 
-//HAPLOID CLONAL CODE: REMOVAL OF NEUTRAL MUTATIONS
-late() {
-  muts = sim.mutationsOfType(m1);
-  freqs = sim.mutationFrequencies(NULL, muts);
-  if (any(freqs == 0.5))
-    sim.subpopulations.genomes.removeMutations(muts[freqs == 0.5], T);
-}
 
+//HAPLOID CLONAL CODE: REMOVAL OF NEUTRAL MUTATIONS (inactive atm)
+//late() {
+  //muts = sim.mutationsOfType(m1);
+  //freqs = sim.mutationFrequencies(NULL, muts);
+  //if (any(freqs == 0.5))
+    //sim.subpopulations.genomes.removeMutations(muts[freqs == 0.5], T);
+//}
 
 //     HISTORY PLOT CODE FOLLOWS
 
