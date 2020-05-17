@@ -132,7 +132,8 @@ initialize() {
 
 //nonWF REPRODUCTION CODE: HAPLOID VERSION
 reproduction() {
-  subpop.addRecombinant(genome1, NULL, NULL, NULL, NULL, NULL);
+if (sim.generation % 100 == 0)
+  subpop.addSelfed(subpop.sampleIndividuals(1));
 }
 
 //POPULATION CODE
