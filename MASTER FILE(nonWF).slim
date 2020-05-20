@@ -172,9 +172,10 @@ if (sim.generation % 100 == 0)
     if (gal4effect <= 4)
       ind.fitnessScaling = 0.0; //die at gal4effect being 4
     else
-      ind.fitnessScaling = (gal4effect/10) + 0.5;
+      ind.fitnessScaling = 1.0;
 
-    meanGal4 = mean(ind.getValue("Gal4_Binding_Affinity"));
+
+    //meanGal4 = mean(ind.getValue("Gal4_Binding_Affinity"));
 
 
     //GAL 4 then interacts with GAL 1
@@ -193,9 +194,9 @@ if (sim.generation % 100 == 0)
     if (gal4effect <= 4)
       ind.fitnessScaling = 0.0; //lethal mutation
     else
-      ind.fitnessScaling = (gal1effect/10) + 0.5;
+      ind.fitnessScaling = 1.0;
 
-    meanGal1 = mean(ind.getValue("Gal1_Binding_Affinity"));
+    //meanGal1 = mean(ind.getValue("Gal1_Binding_Affinity"));
 
     //GAL 1 then produces GAl80
     gal80pd = ind.genomes.mutationsOfType(m4); //gal 80 promoter deleterious
@@ -213,9 +214,9 @@ if (sim.generation % 100 == 0)
     if (gal80ffect <= 4)
       ind.fitnessScaling = 0.3; //non-lethal mutation
     else
-      ind.fitnessScaling = (gal80effect/10) + 0.5;
+      ind.fitnessScaling = 1.0;
 
-    meanGal80 = mean(ind.getValue("Gal80_Binding_Affinity"));
+  //  meanGal80 = mean(ind.getValue("Gal80_Binding_Affinity"));
     //GAL 80 blocks GAL1 but that doesnt really matter? Slash i am assuming glactose to be present
 
     //Gal3
@@ -235,9 +236,9 @@ if (sim.generation % 100 == 0)
       if (gal3effect <= 4)
         ind.fitnessScaling = 0.3; //nonlethal
       else
-        ind.fitnessScaling = (gal3effect/10) + 0.5;
+        ind.fitnessScaling = 0.0;
 
-      meanGal3 = mean(ind.getValue("Gal3_Binding_Affinity"));
+      //meanGal3 = mean(ind.getValue("Gal3_Binding_Affinity"));
       }
 
     else{
@@ -270,9 +271,9 @@ if (sim.generation % 100 == 0)
     if (gal2ffect <= 4)
       ind.fitnessScaling = 0.0; //lethal mutation
     else
-      ind.fitnessScaling = (gal2effect/10) + 0.5;
+      ind.fitnessScaling = 1.0;
 
-    meanGal2 = mean(ind.getValue("Gal2_Binding_Affinity"));
+  //  meanGal2 = mean(ind.getValue("Gal2_Binding_Affinity"));
 
     //GAL1 Gal1 again
 
@@ -288,9 +289,9 @@ if (sim.generation % 100 == 0)
     if (gal7ffect <= 4)
       ind.fitnessScaling = 0.0; //lethal mutation
     else
-      ind.fitnessScaling = (gal7effect/10) + 0.5;
+      ind.fitnessScaling = 1.0;
 
-    meanGal7 = mean(ind.getValue("Gal7_Binding_Affinity"));
+    //meanGal7 = mean(ind.getValue("Gal7_Binding_Affinity"));
 
     //GAL 10
     gal10pd = ind.genomes.mutationsOfType(m2); //gal 10 promoter deleterious
@@ -304,9 +305,9 @@ if (sim.generation % 100 == 0)
     if (gal10effect <= 4)
       ind.fitnessScaling = 0.0; //lethal mutation
     else
-      ind.fitnessScaling = (gal10effect/10) + 0.5;
+      ind.fitnessScaling = 1.0;
 
-    meanGal10 = mean(ind.getValue("Gal10_Binding_Affinity"));
+    //meanGal10 = mean(ind.getValue("Gal10_Binding_Affinity"));
 
     //GAL5
 
@@ -324,26 +325,26 @@ if (sim.generation % 100 == 0)
     if (gal5effect <= 4)
       ind.fitnessScaling = 0.3; //nonlethal mutation
     else
-      ind.fitnessScaling = (gal5effect/10) + 0.5;
+      ind.fitnessScaling = 1.0;
 
-    meanGal5 = mean(ind.getValue("Gal5_Binding_Affinity"));
+    //meanGal5 = mean(ind.getValue("Gal5_Binding_Affinity"));
 
     //Finally, total network function is the sum of all of the above,
-    network = ((meanGal7 + meanGal10 + meanGal1 + meanGal2 + meanGal3 + meanGal4 + meanGal5 + meanGal80) / 40) * 100;
+    //network = ((meanGal7 + meanGal10 + meanGal1 + meanGal2 + meanGal3 + meanGal4 + meanGal5 + meanGal80) / 40) * 100;
     //note: maybe refine code so that population doesnt start at 100%
 
     //ouput code for above network functionality: UPDATE!!!
-    catn();
-    catn("Mean Gal4 Binding Affinity: " + meanGal4);
-    catn("Mean Gal1 Binding Affinity: " + meanGal1);
-    catn("Mean Gal80 Binding Affinity: " + meanGal80);
-    catn("Mean Gal3 Binding Affinity: " + meanGal3);
-    catn("Complex Value: " + leloir);
-    catn("Mean Gal2 Binding Affinity: " + meanGal2);
-    catn("Mean Gal7 Binding Affinity: " + meanGal7);
-    catn("Mean Gal10 Binding Affinity: " + meanGal10);
-    catn("Mean Gal5 Binding Affinity: " + meanGal5);
-    catn("Mean Network functionality: " + network + "%");
+    //catn();
+    //catn("Mean Gal4 Binding Affinity: " + meanGal4);
+    //catn("Mean Gal1 Binding Affinity: " + meanGal1);
+    //catn("Mean Gal80 Binding Affinity: " + meanGal80);
+    //catn("Mean Gal3 Binding Affinity: " + meanGal3);
+    //catn("Complex Value: " + leloir);
+    //catn("Mean Gal2 Binding Affinity: " + meanGal2);
+    //catn("Mean Gal7 Binding Affinity: " + meanGal7);
+    //catn("Mean Gal10 Binding Affinity: " + meanGal10);
+    //catn("Mean Gal5 Binding Affinity: " + meanGal5);
+    //catn("Mean Network functionality: " + network + "%");
 
   }
   }
@@ -368,6 +369,38 @@ late() {
   if (any(freqs == 0.5))
     sim.subpopulations.genomes.removeMutations(muts[freqs == 0.5], T);
 }
+
+//output and means
+late() {
+  if(sim.generation % 100 == 0) {
+    //call back means  (do i have to get rid of the inds?)
+    meanGal4 = mean(ind.getValue("Gal4_Binding_Affinity"));
+    meanGal1 = mean(ind.getValue("Gal1_Binding_Affinity"));
+    meanGal80 = mean(ind.getValue("Gal80_Binding_Affinity"));
+    meanGal3 = mean(ind.getValue("Gal3_Binding_Affinity"));
+    meanGal2 = mean(ind.getValue("Gal2_Binding_Affinity"));
+    meanGal7 = mean(ind.getValue("Gal7_Binding_Affinity"));
+    meanGal10 = mean(ind.getValue("Gal10_Binding_Affinity"));
+    meanGal5 = mean(ind.getValue("Gal5_Binding_Affinity"));
+
+    network = ((meanGal7 + meanGal10 + meanGal1 + meanGal2 + meanGal3 + meanGal4 + meanGal5 + meanGal80) / 40) * 100;
+
+    catn();
+    catn("Mean Gal4 Binding Affinity: " + meanGal4);
+    catn("Mean Gal1 Binding Affinity: " + meanGal1);
+    catn("Mean Gal80 Binding Affinity: " + meanGal80);
+    catn("Mean Gal3 Binding Affinity: " + meanGal3);
+    catn("Complex Value: " + leloir);
+    catn("Mean Gal2 Binding Affinity: " + meanGal2);
+    catn("Mean Gal7 Binding Affinity: " + meanGal7);
+    catn("Mean Gal10 Binding Affinity: " + meanGal10);
+    catn("Mean Gal5 Binding Affinity: " + meanGal5);
+    catn("Mean Network functionality: " + network + "%");
+  }
+
+}
+
+
 
 
 //     HISTORY PLOT CODE FOLLOWS
