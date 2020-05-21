@@ -212,6 +212,7 @@ fitness(NULL){
 //General neutral mutations
 fitness(m1) { return 1.0;} //neutral
 
+//GAL Network fitness effects
 //GAL 7 promoter
   //deleterious
   fitness(m2) {
@@ -300,40 +301,43 @@ fitness(m1) { return 1.0;} //neutral
 
 //-----------------------------------------------------------------------
 //survival/viability call backs
+//Survival depends on 1)ENVIRONMENT and 2)NETWORK FUNCTION
 
-TO BE WORKED ON:
+// 1) ENVIRONMENT
+  //IMPACTS OF GALACTOSE
+  //High glucose levels
+    2000 late() {
+    if (glucoseFixed > 0.5)
+      stop("High Glucose levels detected. Simulation terminated after 2000 generations.");
+    }
 
-//IMPACTS OF GALACTOSE
-//High glucose levels
-2000 late() {
-if (glucoseFixed > 0.5)
- stop("High Glucose levels detected. Simulation terminated after 2000 generations.");
- }
+  //Medium to low glucose levels mean model operates normally
 
-//Medium to low glucose levels mean model operates normally
+  //IMPACTS OF GALACTOSE
+  //High galactose levels
+    1:20000 late() {
+    if (galactose > 15 )
+      p1.fitnessScaling(1.5)
+    }
 
-//IMPACTS OF GALACTOSE
-//High galactose levels
-1:20000 late() {
-if (galactose > 15 )
-  p1.fitnessScaling(1.5)
-}
+  //Normal operation is medium level output (so fitnessScaling = 1.0)
 
-//Normal operation is medium level output (so fitnessScaling = 1.0)
+  //Low galactose levels (and low to mid glucose levels by extension)
+    1:20000 late() {
+    if (galactose > 5 )
+      p1.fitnessScaling(0.5)
+    }
 
-//Low galactose levels (and low to mid glucose levels by extension)
-1:20000 late() {
-if (galactose > 5 )
-  p1.fitnessScaling(0.5)
-}
+  //No galactose
+    late() {
+     if (galactose = 0)
+      stop("No extracellular galactose detected. Cannot run simulation.");
+    }
+  //
+//
 
-//No galactose
- late() {
- if (galactose = 0)
-  stop("No extracellular galactose detected. Cannot run simulation.");
-  }
-
-
+//2) NETWORK STRUCTURE
+//work with tags? like set up tag loops and then rescale individual fitness results
 
 
 //---------------------------------------------------------------------
