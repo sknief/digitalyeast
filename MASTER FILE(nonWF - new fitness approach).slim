@@ -3,78 +3,81 @@
 // START COMMANDS - DNI
 initialize() {
   initializeSLiMModelType("nonWF");
-  defineConstant("K", 500);
+   initializeSLiMOptions(dimensionality="xy", periodicity="xy");
+  defineConstant("K", 100);
+   defineConstant("S", 0.1);   // sigma_S, the spatial competition width
 
-  initializeMutationRate(1e-8);
+  initializeMutationRate(1e-5);
   initializeRecombinationRate(1e-8);
 
   //ALTERNATIVE MUTATION TYPES AND RATES(SEE NOTES)
   //N mutation type: neutral
-  initializeMutationType("m1", 0.5, "f", 0.0);
+  initializeMutationType("m1", 1, "f", 0.0);
   m1.color = "yellow";
+  m1.convertToSubstitution = T;
   // [CIS] GAL7 deleterious
-  initializeMutationType("m2", 0.5, "e", 0.4);
+  initializeMutationType("m2", 1, "e", 0.4);
   m2.color = "red";
   // [CIS] GAL7 slightly beneficial
-  initializeMutationType("m3", 0.5, "g", 0.5, 1.0);
+  initializeMutationType("m3", 1, "g", 0.5, 1.0);
   m3.color = "green";
   // [CIS] GAL10 deleterious
-  initializeMutationType("m4", 0.5, "e", 0.4);
+  initializeMutationType("m4", 1, "e", 0.4);
   m4.color = "red";
   // [CIS] GAL10 slightly beneficial
-  initializeMutationType("m5", 0.5, "g", 0.5, 1.0);
+  initializeMutationType("m5", 1, "g", 0.5, 1.0);
   m5.color = "green";
   // [TRANS] GAL1 deleterious
-  initializeMutationType("m6", 0.5, "e", 0.4);
+  initializeMutationType("m6", 1, "e", 0.4);
   m6.color = "pink";
   // [TRANS] GAL1 slightly beneficial
-  initializeMutationType("m7", 0.5, "g", 0.5, 1.0);
+  initializeMutationType("m7", 1, "g", 0.5, 1.0);
   m7.color = "lightblue";
   // [TRANS] GAL3 deleterious
-  initializeMutationType("m8", 0.5, "e", 0.4);
+  initializeMutationType("m8", 1, "e", 0.4);
   m8.color = "pink";
   // [TRANS] GAL3 slightly beneficial
-  initializeMutationType("m9", 0.5, "g", 0.5, 1.0);
+  initializeMutationType("m9", 1, "g", 0.5, 1.0);
   m9.color = "lightblue";
   // [CIS] GAL2 deleterious
-  initializeMutationType("m10", 0.5, "e", 0.4);
+  initializeMutationType("m10", 1, "e", 0.4);
   m10.color = "red";
   // [CIS] GAL2 slightly beneficial
-  initializeMutationType("m11", 0.5, "g", 0.5, 1.0);
+  initializeMutationType("m11", 1, "g", 0.5, 1.0);
   m11.color = "green";
   // [TRANS] GAL80 deleterious
-  initializeMutationType("m12", 0.5, "e", 0.4);
+  initializeMutationType("m12", 1, "e", 0.4);
   m12.color = "pink";
   // [TRANS] GAL80 slightly beneficial
-  initializeMutationType("m13", 0.5, "g", 0.5, 1.0);
+  initializeMutationType("m13", 1, "g", 0.5, 1.0);
   m13.color = "lightblue";
   // [CIS] GAL5 deleterious
-  initializeMutationType("m14", 0.5, "e", 0.4);
+  initializeMutationType("m14", 1, "e", 0.4);
   m14.color = "red";
   // [CIS] GAL5 slightly beneficial
-  initializeMutationType("m15", 0.5, "g", 0.5, 1.0);
+  initializeMutationType("m15", 1, "g", 0.5, 1.0);
   m15.color = "green";
   // [TRANS] GAL4 deleterious
-  initializeMutationType("m16", 0.5, "e", 0.4);
+  initializeMutationType("m16", 1, "e", 0.4);
   m16.color = "pink";
   // [TRANS] GAL4 slightly beneficial
-  initializeMutationType("m17", 0.5, "g", 0.5, 1.0);
+  initializeMutationType("m17", 1, "g", 0.5, 1.0);
   m17.color = "lightblue";
 
   //GENOMIC ELEMENTS
   	initializeGenomicElementType("g1", m1, 1.0); //non-coding
-  	initializeGenomicElementType("g2", c(m1, m2, m3), c(0.9, 0.05, 0.05)); //GAL7 promoter
-  	initializeGenomicElementType("g3", c(m1, m4, m5), c(0.9, 0.05, 0.05)); //GAL10 promoter
-  	initializeGenomicElementType("g4", c(m1, m6, m7), c(0.9, 0.05, 0.05)); //GAL1 promoter
-  	initializeGenomicElementType("g5", c(m1, m6, m7), c(0.9, 0.05, 0.05)); //GAL1 coding
-  	initializeGenomicElementType("g6", c(m1, m8, m9), c(0.9, 0.05, 0.05)); //GAL3 promoter
-  	initializeGenomicElementType("g7", c(m1, m8, m9), c(0.9, 0.05, 0.05)); //GAL3 coding
-  	initializeGenomicElementType("g8", c(m1, m10, m11), c(0.9, 0.05, 0.05)); //GAL2 promoter
-  	initializeGenomicElementType("g9", c(m1, m12, m13), c(0.9, 0.05, 0.05)); //GAL80 promoter
-  	initializeGenomicElementType("g10", c(m1, m12, m13), c(0.9, 0.05, 0.05)); //GAL80 coding
-  	initializeGenomicElementType("g11", c(m1, m14, m15), c(0.9, 0.05, 0.05)); //GAL5 promoter
-  	initializeGenomicElementType("g12", c(m1, m16, m17), c(0.9, 0.05, 0.05)); //GAL4 promoter
-  	initializeGenomicElementType("g13", c(m1, m16, m17), c(0.9, 0.05, 0.05)); //GAL4 coding
+  	initializeGenomicElementType("g2", c(m1, m2, m3), c(0.6, 0.35, 0.05)); //GAL7 promoter
+  	initializeGenomicElementType("g3", c(m1, m4, m5), c(0.6, 0.35, 0.05)); //GAL10 promoter
+  	initializeGenomicElementType("g4", c(m1, m6, m7), c(0.6, 0.35, 0.05)); //GAL1 promoter
+  	initializeGenomicElementType("g5", c(m1, m6, m7), c(0.6, 0.35, 0.05)); //GAL1 coding
+  	initializeGenomicElementType("g6", c(m1, m8, m9), c(0.6, 0.35, 0.05)); //GAL3 promoter
+  	initializeGenomicElementType("g7", c(m1, m8, m9), c(0.6, 0.35, 0.05)); //GAL3 coding
+  	initializeGenomicElementType("g8", c(m1, m10, m11), c(0.6, 0.35, 0.05)); //GAL2 promoter
+  	initializeGenomicElementType("g9", c(m1, m12, m13), c(0.6, 0.35, 0.05)); //GAL80 promoter
+  	initializeGenomicElementType("g10", c(m1, m12, m13), c(0.6, 0.35, 0.05)); //GAL80 coding
+  	initializeGenomicElementType("g11", c(m1, m14, m15), c(0.6, 0.35, 0.05)); //GAL5 promoter
+  	initializeGenomicElementType("g12", c(m1, m16, m17), c(0.6, 0.35, 0.05)); //GAL4 promoter
+  	initializeGenomicElementType("g13", c(m1, m16, m17), c(0.6, 0.35, 0.05)); //GAL4 coding
  //
 
  //CHROMOSOME STRUCTURE
@@ -126,22 +129,54 @@ initialize() {
  defineConstant("galactose", 20.0); //fixed, but putting it here for future functionality
 
   defineConstant("QTL_optima", c(0.0, 20.0));
+  
+  // spatial competition
+         initializeInteractionType(1, "xy", reciprocal=T, maxDistance=S*3);
+         i1.setInteractionFunction("n", 1.0, S);
+         // spatial mate choice
+         initializeInteractionType(2, "xy", reciprocal=T, maxDistance=0.1);
+  
  //
 } //initialize command bracket ends here
 
 //POPULATION CODE
 1 early() {
-  sim.addSubpop("p1", 200);
+  sim.addSubpop("p1", 10);
+   p1.individuals.setSpatialPosition(p1.pointUniform(1));
 }
+
+
+
 
 //Code in nonWF order now:
 // --------------------------------------------------------------------
 //reproduction() call backs
 
-reproduction() {
-if (sim.generation % 100 == 0)
-  subpop.addCloned(subpop.sampleIndividuals(1));
+//reproduction() {
+//if (sim.generation % 1000 == 0)
+//  subpop.addCrossed(individual, subpop.sampleIndividuals(1));
+//  }
+
+  reproduction() {
+ 
+
+         // choose our nearest neighbor as a mate, within the max distance
+         mate = i2.nearestNeighbors(individual, 1);
+         for (i in seqLen(rpois(1, 0.1)))
+         {
+            if (mate.size())
+              offspring = subpop.addCrossed(individual, mate);
+else
+              offspring = subpop.addSelfed(individual);
+            // set offspring position
+            pos = individual.spatialPosition + rnorm(2, 0, 0.02);
+            offspring.setSpatialPosition(p1.pointPeriodic(pos));
+         }
+         
 }
+
+
+
 
 //---------------------------------------------------------------------
 //mutation() call back and recombination() call backs
@@ -150,70 +185,86 @@ if (sim.generation % 100 == 0)
 //---------------------------------------------------------------------
 //early() call backs
 
+////FITNESS SCALING: Redundant?
+//early() {
+//  p1.fitnessScaling = K / p1.individualCount;
+//}
+
+     early() {
+         i1.evaluate();
+         // spatial competition provides density-dependent selection
+         inds = p1.individuals;
+         competition = i1.totalOfNeighborStrengths(inds);
+         competition = (competition + 1) / (2 * PI * S^2);
+          inds.fitnessScaling = K / competition;
+     }
+
 
 //-------------------------------------------------------------------
 //fitness() call backs
 
+//fitness(NULL){ return 1.0;}
+
 //trying to make the fitness dependent on
-fitness(m1) { 0.0;} //neutral
+fitness(m1) { return 1.0;} //neutral
 
 fitness(m2) {
-  return 1.0 - individual.mutationFrequencies(mut);
+   return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
 }
 
 fitness(m3) {
-  return 1.0 + individual.mutationFrequencies(mut);
+  return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
 }
 
 fitness(m4) {
-  return 1.0 - individual.mutationFrequencies(mut);
+  return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
 }
 
 fitness(m5) {
-  return 1.0 + individual.mutationFrequencies(mut);
+  return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
 }
 fitness(m6) {
-  return 1.0 - individual.mutationFrequencies(mut);
+  return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
 }
 
 fitness(m7) {
-  return 1.0 + individual.mutationFrequencies(mut);
+  return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
 }
 fitness(m8) {
-  return 1.0 - individual.mutationFrequencies(mut);
+  return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
 }
 
-fitness(m9) {
-  return 1.0 + individual.mutationFrequencies(mut);
+fitness(m9){
+  return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
 }
 fitness(m10) {
-  return 1.0 - individual.mutationFrequencies(mut);
+  return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
 }
 
 fitness(m11) {
-  return 1.0 + individual.mutationFrequencies(mut);
+  return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
 }
 fitness(m12) {
-  return 1.0 - individual.mutationFrequencies(mut);
+  return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
 }
 
 fitness(m13) {
-  return 1.0 + individual.mutationFrequencies(mut);
+  return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
 }
 fitness(m14) {
-  return 1.0 - individual.mutationFrequencies(mut);
+  return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
 }
 
 fitness(m15) {
-  return 1.0 + individual.mutationFrequencies(mut);
+  return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
 }
 
 fitness(m16) {
-  return 1.0 - individual.mutationFrequencies(mut);
-}
+  return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
+  }
 
 fitness(m17) {
-  return 1.0 + individual.mutationFrequencies(mut);
+  return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
 }
 
 
@@ -238,39 +289,28 @@ late() {
 
 //Callback for if they all die
 late() {
-if (sum(sim.individualCount) == 0)
+if (sum(p1.individualCount) == 0)
  stop("Complete extinction in generation " + sim.generation + ".");
  }
+ 
+ 
+ late() {
+         // move around a bit
+        for (ind in p1.individuals)
+         {
+            newPos = ind.spatialPosition + runif(2, -0.01, 0.01);
+            ind.setSpatialPosition(p1.pointPeriodic(newPos));
+         }
+         // then look for mates
+         i2.evaluate();
+     }
 
-//output and means
-late() {
-  if(sim.generation % 100 == 0) {
-    //call back means  (do i have to get rid of the inds?)
-    meanGal4 = mean(ind.getValue("Gal4_Binding_Affinity"));
-    meanGal1 = mean(ind.getValue("Gal1_Binding_Affinity"));
-    meanGal80 = mean(ind.getValue("Gal80_Binding_Affinity"));
-    meanGal3 = mean(ind.getValue("Gal3_Binding_Affinity"));
-    meanGal2 = mean(ind.getValue("Gal2_Binding_Affinity"));
-    meanGal7 = mean(ind.getValue("Gal7_Binding_Affinity"));
-    meanGal10 = mean(ind.getValue("Gal10_Binding_Affinity"));
-    meanGal5 = mean(ind.getValue("Gal5_Binding_Affinity"));
 
-    network = ((meanGal7 + meanGal10 + meanGal1 + meanGal2 + meanGal3 + meanGal4 + meanGal5 + meanGal80) / 40) * 100;
 
-    catn();
-    catn("Mean Gal4 Binding Affinity: " + meanGal4);
-    catn("Mean Gal1 Binding Affinity: " + meanGal1);
-    catn("Mean Gal80 Binding Affinity: " + meanGal80);
-    catn("Mean Gal3 Binding Affinity: " + meanGal3);
-    catn("Complex Value: " + leloir);
-    catn("Mean Gal2 Binding Affinity: " + meanGal2);
-    catn("Mean Gal7 Binding Affinity: " + meanGal7);
-    catn("Mean Gal10 Binding Affinity: " + meanGal10);
-    catn("Mean Gal5 Binding Affinity: " + meanGal5);
-    catn("Mean Network functionality: " + network + "%");
-  }
 
-}
+ 
+200000 late() {sim.outputFull();}
+
 
 //     HISTORY PLOT CODE FOLLOWS
 
