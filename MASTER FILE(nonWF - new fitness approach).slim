@@ -12,56 +12,56 @@ initialize() {
 
   //ALTERNATIVE MUTATION TYPES AND RATES(SEE NOTES)
   //N mutation type: neutral
-  initializeMutationType("m1", 1, "f", 0.0);
+  initializeMutationType("m1", 0.5, "f", 0.0);
   m1.color = "yellow";
   m1.convertToSubstitution = T;
   // [CIS] GAL7 deleterious
-  initializeMutationType("m2", 1, "e", 0.4);
+  initializeMutationType("m2", 0.5, "e", 0.4);
   m2.color = "red";
   // [CIS] GAL7 slightly beneficial
-  initializeMutationType("m3", 1, "g", 0.5, 1.0);
+  initializeMutationType("m3", 0.5, "g", 0.5, 1.0);
   m3.color = "green";
   // [CIS] GAL10 deleterious
-  initializeMutationType("m4", 1, "e", 0.4);
+  initializeMutationType("m4", 0.5, "e", 0.4);
   m4.color = "red";
   // [CIS] GAL10 slightly beneficial
-  initializeMutationType("m5", 1, "g", 0.5, 1.0);
+  initializeMutationType("m5", 0.5, "g", 0.5, 1.0);
   m5.color = "green";
   // [TRANS] GAL1 deleterious
-  initializeMutationType("m6", 1, "e", 0.4);
+  initializeMutationType("m6", 0.5, "e", 0.4);
   m6.color = "pink";
   // [TRANS] GAL1 slightly beneficial
-  initializeMutationType("m7", 1, "g", 0.5, 1.0);
+  initializeMutationType("m7", 0.5, "g", 0.5, 1.0);
   m7.color = "lightblue";
   // [TRANS] GAL3 deleterious
-  initializeMutationType("m8", 1, "e", 0.4);
+  initializeMutationType("m8", 0.5, "e", 0.4);
   m8.color = "pink";
   // [TRANS] GAL3 slightly beneficial
-  initializeMutationType("m9", 1, "g", 0.5, 1.0);
+  initializeMutationType("m9", 0.5, "g", 0.5, 1.0);
   m9.color = "lightblue";
   // [CIS] GAL2 deleterious
-  initializeMutationType("m10", 1, "e", 0.4);
+  initializeMutationType("m10", 0.5, "e", 0.4);
   m10.color = "red";
   // [CIS] GAL2 slightly beneficial
-  initializeMutationType("m11", 1, "g", 0.5, 1.0);
+  initializeMutationType("m11", 0.5, "g", 0.5, 1.0);
   m11.color = "green";
   // [TRANS] GAL80 deleterious
-  initializeMutationType("m12", 1, "e", 0.4);
+  initializeMutationType("m12", 0.5, "e", 0.4);
   m12.color = "pink";
   // [TRANS] GAL80 slightly beneficial
-  initializeMutationType("m13", 1, "g", 0.5, 1.0);
+  initializeMutationType("m13", 0.5, "g", 0.5, 1.0);
   m13.color = "lightblue";
   // [CIS] GAL5 deleterious
-  initializeMutationType("m14", 1, "e", 0.4);
+  initializeMutationType("m14", 0.5, "e", 0.4);
   m14.color = "red";
   // [CIS] GAL5 slightly beneficial
-  initializeMutationType("m15", 1, "g", 0.5, 1.0);
+  initializeMutationType("m15", 0.5, "g", 0.5, 1.0);
   m15.color = "green";
   // [TRANS] GAL4 deleterious
-  initializeMutationType("m16", 1, "e", 0.4);
+  initializeMutationType("m16", 0.5, "e", 0.4);
   m16.color = "pink";
   // [TRANS] GAL4 slightly beneficial
-  initializeMutationType("m17", 1, "g", 0.5, 1.0);
+  initializeMutationType("m17", 0.5, "g", 0.5, 1.0);
   m17.color = "lightblue";
 
   //GENOMIC ELEMENTS
@@ -141,7 +141,7 @@ initialize() {
 
 //POPULATION CODE
 1 early() {
-  sim.addSubpop("p1", 10);
+  sim.addSubpop("p1", 100);
    p1.individuals.setSpatialPosition(p1.pointUniform(1));
 }
 
@@ -151,11 +151,6 @@ initialize() {
 //Code in nonWF order now:
 // --------------------------------------------------------------------
 //reproduction() call backs
-
-//reproduction() {
-//if (sim.generation % 1000 == 0)
-//  subpop.addCrossed(individual, subpop.sampleIndividuals(1));
-//  }
 
   reproduction() {
 
@@ -185,11 +180,6 @@ else
 //---------------------------------------------------------------------
 //early() call backs
 
-////FITNESS SCALING: Redundant?
-//early() {
-//  p1.fitnessScaling = K / p1.individualCount;
-//}
-
      early() {
          i1.evaluate();
          // spatial competition provides density-dependent selection
@@ -204,10 +194,11 @@ else
 //fitness() call backs
 
 //High glucose levels so mutations dont impact survival
-fitness(NULL){
-  if (glucoseFixed <= 0.5)
-  return 1.0;
-}
+//fitness(NULL){
+//  if (glucoseFixed <= 0.5)
+//  return 1.0;
+//}
+
 
 //General neutral mutations
 fitness(m1) { return 1.0;} //neutral
@@ -304,33 +295,27 @@ fitness(m1) { return 1.0;} //neutral
 //Survival depends on 1)ENVIRONMENT and 2)NETWORK FUNCTION
 
 // 1) ENVIRONMENT
-  //IMPACTS OF GALACTOSE
-  //High glucose levels
-    2000 late() {
-    if (glucoseFixed > 0.5)
-      stop("High Glucose levels detected. Simulation terminated after 2000 generations.");
-    }
 
-  //Medium to low glucose levels mean model operates normally
-
-  //IMPACTS OF GALACTOSE
+//IMPACTS OF GALACTOSE
   //High galactose levels
     1:20000 late() {
-    if (galactose > 15 )
-      p1.fitnessScaling(1.5)
+    if (galactose > 25 )
+      p1.fitnessScaling = 0.5;
+     else p1.fitnessScaling = 1.0;
     }
 
   //Normal operation is medium level output (so fitnessScaling = 1.0)
 
   //Low galactose levels (and low to mid glucose levels by extension)
     1:20000 late() {
-    if (galactose > 5 )
-      p1.fitnessScaling(0.5)
+    if (galactose < 5 )
+      p1.fitnessScaling = 1.5;
+      else p1.fitnessScaling = 1.0;
     }
 
   //No galactose
     late() {
-     if (galactose = 0)
+     if (galactose == 0)
       stop("No extracellular galactose detected. Cannot run simulation.");
     }
   //
