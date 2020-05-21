@@ -129,13 +129,13 @@ initialize() {
  defineConstant("galactose", 20.0); //fixed, but putting it here for future functionality
 
   defineConstant("QTL_optima", c(0.0, 20.0));
-  
+
   // spatial competition
          initializeInteractionType(1, "xy", reciprocal=T, maxDistance=S*3);
          i1.setInteractionFunction("n", 1.0, S);
          // spatial mate choice
          initializeInteractionType(2, "xy", reciprocal=T, maxDistance=0.1);
-  
+
  //
 } //initialize command bracket ends here
 
@@ -158,7 +158,7 @@ initialize() {
 //  }
 
   reproduction() {
- 
+
 
          // choose our nearest neighbor as a mate, within the max distance
          mate = i2.nearestNeighbors(individual, 1);
@@ -172,7 +172,7 @@ else
             pos = individual.spatialPosition + rnorm(2, 0, 0.02);
             offspring.setSpatialPosition(p1.pointPeriodic(pos));
          }
-         
+
 }
 
 
@@ -203,73 +203,136 @@ else
 //-------------------------------------------------------------------
 //fitness() call backs
 
-//fitness(NULL){ return 1.0;}
+//High glucose levels so mutations dont impact survival
+fitness(NULL){
+  if (glucoseFixed <= 0.5)
+  return 1.0;
+}
 
-//trying to make the fitness dependent on
+//General neutral mutations
 fitness(m1) { return 1.0;} //neutral
 
-fitness(m2) {
-   return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
-}
-
-fitness(m3) {
-  return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
-}
-
-fitness(m4) {
-  return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
-}
-
-fitness(m5) {
-  return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
-}
-fitness(m6) {
-  return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
-}
-
-fitness(m7) {
-  return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
-}
-fitness(m8) {
-  return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
-}
-
-fitness(m9){
-  return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
-}
-fitness(m10) {
-  return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
-}
-
-fitness(m11) {
-  return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
-}
-fitness(m12) {
-  return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
-}
-
-fitness(m13) {
-  return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
-}
-fitness(m14) {
-  return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
-}
-
-fitness(m15) {
-  return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
-}
-
-fitness(m16) {
-  return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
+//GAL 7 promoter
+  //deleterious
+  fitness(m2) {
+     return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
+  }
+  //beneficial
+  fitness(m3) {
+    return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
   }
 
-fitness(m17) {
-  return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
-}
+//GAL 10 promoter
+  //deleterious
+  fitness(m4) {
+    return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
+  }
+  //beneficial
+  fitness(m5) {
+    return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
+  }
+
+//GAL 1 promoter + coding
+  //deleterious
+  fitness(m6) {
+    return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
+  }
+  //beneficial
+  fitness(m7) {
+    return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
+  }
+
+
+//GAL 3 promoter + coding
+  //deleterious
+  fitness(m8) {
+      return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
+    }
+  }
+  //beneficial
+  fitness(m9){
+    return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
+  }
+
+//GAL 2 promoter
+  //deleterious
+  fitness(m10) {
+    return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
+  }
+  //beneficial
+  fitness(m11) {
+    return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
+  }
+
+//GAL 80 promoter and coding
+  //deleterious
+  fitness(m12) {
+    return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
+  }
+  //beneficial
+  fitness(m13) {
+    return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
+  }
+
+//GAL 5 promoter
+  //deleterious
+  fitness(m14) {
+    return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
+  }
+  //beneficial
+  fitness(m15) {
+    return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
+  }
+
+//GAL 4 promoter + coding
+//Gets activated first when glucose is low and galactose is highe
+  //deleterious
+  fitness(m16) {
+    return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
+    }
+  //beneficial
+  fitness(m17) {
+    return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
+  }
+
+
 
 
 //-----------------------------------------------------------------------
 //survival/viability call backs
+
+TO BE WORKED ON:
+
+//IMPACTS OF GALACTOSE
+//High glucose levels
+2000 late() {
+if (glucoseFixed > 0.5)
+ stop("High Glucose levels detected. Simulation terminated after 2000 generations.");
+ }
+
+//Medium to low glucose levels mean model operates normally
+
+//IMPACTS OF GALACTOSE
+//High galactose levels
+1:20000 late() {
+if (galactose > 15 )
+  p1.fitnessScaling(1.5)
+}
+
+//Normal operation is medium level output (so fitnessScaling = 1.0)
+
+//Low galactose levels (and low to mid glucose levels by extension)
+1:20000 late() {
+if (galactose > 5 )
+  p1.fitnessScaling(0.5)
+}
+
+//No galactose
+ late() {
+ if (galactose = 0)
+  stop("No extracellular galactose detected. Cannot run simulation.");
+  }
+
 
 
 
@@ -292,8 +355,8 @@ late() {
 if (sum(p1.individualCount) == 0)
  stop("Complete extinction in generation " + sim.generation + ".");
  }
- 
- 
+
+
  late() {
          // move around a bit
         for (ind in p1.individuals)
@@ -308,7 +371,7 @@ if (sum(p1.individualCount) == 0)
 
 
 
- 
+
 200000 late() {sim.outputFull();}
 
 
