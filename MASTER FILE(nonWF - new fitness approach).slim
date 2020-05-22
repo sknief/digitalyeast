@@ -11,18 +11,19 @@ initialize() {
     defineConstant("glucose", 0.5); //extracellular glucose
     defineConstant("galactose", 20.0); //High: >25, Low <5, None = 0
     defineConstant("SP", 0.1); //Selective pressure scalar, 0.1 is standard, increase for higher selective pressure
-    defineConstant("L", 3); //lethal mutation cutoff number
+    defineConstant("L", 3); //lethal mutation cutoff number for individual gene binding affinity
+     defineConstant("LL", 7); //lethal mutation cutoff number for network function
     defineConstant("CisMu", 1e-5); //mutation rate of cis element
     defineConstant("TransMu", 1e-5); //mutation rate of trans ELEMENTS
-    defineConstant("GlMu", 1e-5); //mutation rate of noncoding regions
+    defineConstant("G1Mu", 1e-5); //mutation rate of noncoding regions
     //note: the next three have to add up to 1
-    defineConstant("PDelRatio", 0.35) //proportion of deleterious mutations generated in promoter region
-    defineConstant("PBenRatio", 0.05) //proportion of beneficial mutations generated in promoter region
-    defineConstant("PNeuRatio", 0.6) // proportion of neutral mutations generated in promoter region
+    defineConstant("PDelRatio", 0.25); //proportion of deleterious mutations generated in promoter region
+    defineConstant("PBenRatio", 0.15); //proportion of beneficial mutations generated in promoter region
+    defineConstant("PNeuRatio", 0.6); // proportion of neutral mutations generated in promoter region
     //note: these next three also have to add up to 1
-    defineConstant("CDelRatio", 0.35) //proportion of deleterious mutations generated in coding region
-    defineConstant("CBenRatio", 0.05) //proportion of beneficial mutations generated in coding region
-    defineConstant("CNeuRatio", 0.6) // proportion of neutral mutations generated in coding region
+    defineConstant("CDelRatio", 0.25); //proportion of deleterious mutations generated in coding region
+    defineConstant("CBenRatio", 0.15); //proportion of beneficial mutations generated in coding region
+    defineConstant("CNeuRatio", 0.6); // proportion of neutral mutations generated in coding region
 
 
 
@@ -92,7 +93,7 @@ initialize() {
   	initializeGenomicElementType("g1", m1, 1.0); //non-coding
   	initializeGenomicElementType("g2", c(m1, m2, m3), c(PNeuRatio, PDelRatio, PBenRatio)); //GAL7 promoter
   	initializeGenomicElementType("g3", c(m1, m4, m5), c(PNeuRatio, PDelRatio, PBenRatio)); //GAL10 promoter
-  	initializeGenomicElementType("g4", c(m1, m6, m7), cPNeuRatio, PDelRatio, PBenRatio)); //GAL1 promoter
+  	initializeGenomicElementType("g4", c(m1, m6, m7), c(PNeuRatio, PDelRatio, PBenRatio)); //GAL1 promoter
   	initializeGenomicElementType("g5", c(m1, m6, m7), c(CNeuRatio, CDelRatio, CBenRatio)); //GAL1 coding
   	initializeGenomicElementType("g6", c(m1, m8, m9), c(PNeuRatio, PDelRatio, PBenRatio)); //GAL3 promoter
   	initializeGenomicElementType("g7", c(m1, m8, m9), c(CNeuRatio, CDelRatio, CBenRatio)); //GAL3 coding
@@ -100,7 +101,7 @@ initialize() {
   	initializeGenomicElementType("g9", c(m1, m12, m13), c(PNeuRatio, PDelRatio, PBenRatio)); //GAL80 promoter
   	initializeGenomicElementType("g10", c(m1, m12, m13), c(CNeuRatio, CDelRatio, CBenRatio)); //GAL80 coding
   	initializeGenomicElementType("g11", c(m1, m14, m15), c(PNeuRatio, PDelRatio, PBenRatio)); //GAL5 promoter
-  	initializeGenomicElementType("g12", c(m1, m16, m17), cPNeuRatio, PDelRatio, PBenRatio)); //GAL4 promoter
+  	initializeGenomicElementType("g12", c(m1, m16, m17), c(PNeuRatio, PDelRatio, PBenRatio)); //GAL4 promoter
   	initializeGenomicElementType("g13", c(m1, m16, m17), c(CNeuRatio, CDelRatio, CBenRatio)); //GAL4 coding
  //
 
@@ -365,7 +366,7 @@ for (ind in sim.subpopulations.individuals) {
       ind.tag = 1;
       catn("GAL4 lethal mutation. Individual " + ind.pedigreeID + " died in generation " + sim.generation); }
   else
-    ind.tag = 0;}
+    ind.tag = 0;
 
 
   //GAL1
@@ -376,7 +377,7 @@ for (ind in sim.subpopulations.individuals) {
       ind.tag = 1;
       catn("GAL1 lethal mutation. Individual " + ind.pedigreeID + " died in generation " + sim.generation); }
   else
-    ind.tag = 0;}
+    ind.tag = 0;
 
 
   //GAL2
@@ -387,7 +388,7 @@ for (ind in sim.subpopulations.individuals) {
       ind.tag = 1;
       catn("GAL2 lethal mutation. Individual " + ind.pedigreeID + " died in generation " + sim.generation); }
     else
-      ind.tag = 0;}
+      ind.tag = 0;
 
   //GAL7
   gal7 = ind.genomes.mutationsOfType(m2);
@@ -397,7 +398,7 @@ for (ind in sim.subpopulations.individuals) {
       ind.tag = 1;
       catn("GAL7 lethal mutation. Individual " + ind.pedigreeID + " died in generation " + sim.generation); }
     else
-      ind.tag = 0;}
+      ind.tag = 0;
 
   //GAL10
   gal10 = ind.genomes.mutationsOfType(m4);
@@ -407,12 +408,23 @@ for (ind in sim.subpopulations.individuals) {
     ind.tag = 1;
     catn("GAL10 lethal mutation. Individual " + ind.pedigreeID + " died in generation " + sim.generation); }
   else
-    ind.tag = 0;}
+    ind.tag = 0;
+    
+    //NETWORKFUNCTION
+  network = sgal10 + sgal7+ sgal4 + sgal1 + sgal2;
+  
+  if (network  > LL) {
+    ind.tag = 1;
+    catn("Network functionality too low. " + ind.pedigreeID + " died in generation " + sim.generation); }
+  else
+    ind.tag = 0;
 
-
-
-
+    
+    
+    
 } //for bracket closes here
+
+}
 
 
 //---------------------------------------------------------------------
