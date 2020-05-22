@@ -358,7 +358,7 @@ fitness(NULL) {
 
 for (ind in sim.subpopulations.individuals) {
   //GAL4
-  gal4 = ind.genomes.mutationsOfType(m4);
+  gal4 = ind.genomes.mutationsOfType(m16);
   sgal4 = size(gal4);
 
   if (sgal4  > L) {
@@ -366,6 +366,51 @@ for (ind in sim.subpopulations.individuals) {
       catn("GAL4 lethal mutation. Individual " + ind.pedigreeID + " died in generation " + sim.generation); }
   else
     ind.tag = 0;}
+
+
+  //GAL1
+  gal1 = ind.genomes.mutationsOfType(m6);
+  sgal1 = size(gal1);
+
+  if (sgal1  > L) {
+      ind.tag = 1;
+      catn("GAL1 lethal mutation. Individual " + ind.pedigreeID + " died in generation " + sim.generation); }
+  else
+    ind.tag = 0;}
+
+
+  //GAL2
+  gal2 = ind.genomes.mutationsOfType(m10);
+  sgal2 = size(gal2);
+
+    if (sgal2  > L) {
+      ind.tag = 1;
+      catn("GAL2 lethal mutation. Individual " + ind.pedigreeID + " died in generation " + sim.generation); }
+    else
+      ind.tag = 0;}
+
+  //GAL7
+  gal7 = ind.genomes.mutationsOfType(m2);
+  sgal7 = size(gal7);
+
+    if (sgal7  > L) {
+      ind.tag = 1;
+      catn("GAL7 lethal mutation. Individual " + ind.pedigreeID + " died in generation " + sim.generation); }
+    else
+      ind.tag = 0;}
+
+  //GAL10
+  gal10 = ind.genomes.mutationsOfType(m4);
+  sgal10 = size(gal10);
+
+  if (sgal10  > L) {
+    ind.tag = 1;
+    catn("GAL10 lethal mutation. Individual " + ind.pedigreeID + " died in generation " + sim.generation); }
+  else
+    ind.tag = 0;}
+
+
+
 
 } //for bracket closes here
 
