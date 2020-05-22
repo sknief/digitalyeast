@@ -287,7 +287,15 @@ fitness(m1) { return 1.0;} //neutral
     return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
   }
 
+//Removed Bad/tagged sampleIndividuals
+fitness(NULL) {
+  // individuals tagged for death die here
+  if (individual.tag == 1)
+   return 1.0;
+  else
+   return 0.0;
 
+  }
 
 
 //-----------------------------------------------------------------------
@@ -323,6 +331,25 @@ fitness(m1) { return 1.0;} //neutral
 
 //2) NETWORK STRUCTURE
 //work with tags? like set up tag loops and then rescale individual fitness results
+
+//tag-based mortality
+1:20000 late() {
+// initially, everybody lives
+  sim.subpopulations.individuals.tag = 0;
+
+for (ind in sim.subpopulations.individuals) {
+  //GAL4
+  gal4 = ind.genomes.mutationsOfType(m4);
+  sgal4 = size(gal4);
+
+  if (sgal4  > 10) {
+      ind.tag = 1;
+      catn("Somebody gonna die"); }
+  else {
+    ind.tag = 0;
+  }
+
+} //for bracket closes here
 
 
 //---------------------------------------------------------------------
