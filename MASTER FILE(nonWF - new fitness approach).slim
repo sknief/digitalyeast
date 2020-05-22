@@ -3,81 +3,106 @@
 // START COMMANDS - DNI
 initialize() {
   initializeSLiMModelType("nonWF");
-   initializeSLiMOptions(dimensionality="xy", periodicity="xy");
-  defineConstant("K", 100);
-   defineConstant("S", 0.1);   // sigma_S, the spatial competition width
+  initializeSLiMOptions(keepPedigrees=T, dimensionality="xy", periodicity="xy");
 
-  initializeMutationRate(1e-5);
+  //CONSTANTS TO DEFINE : USER INPUT here
+    defineConstant("P", 10); //initial population size
+    defineConstant("K", 100); //carrying capacity
+    defineConstant("glucose", 0.5); //extracellular glucose
+    defineConstant("galactose", 20.0); //High: >25, Low <5, None = 0
+    defineConstant("SP", 0.1); //Selective pressure scalar, 0.1 is standard, increase for higher selective pressure
+    defineConstant("L", 3); //lethal mutation cutoff number for individual gene binding affinity
+     defineConstant("LL", 7); //lethal mutation cutoff number for network function
+    defineConstant("CisMu", 1e-5); //mutation rate of cis element
+    defineConstant("TransMu", 1e-5); //mutation rate of trans ELEMENTS
+    defineConstant("G1Mu", 1e-5); //mutation rate of noncoding regions
+    //note: the next three have to add up to 1
+    defineConstant("PDelRatio", 0.25); //proportion of deleterious mutations generated in promoter region
+    defineConstant("PBenRatio", 0.15); //proportion of beneficial mutations generated in promoter region
+    defineConstant("PNeuRatio", 0.6); // proportion of neutral mutations generated in promoter region
+    //note: these next three also have to add up to 1
+    defineConstant("CDelRatio", 0.25); //proportion of deleterious mutations generated in coding region
+    defineConstant("CBenRatio", 0.15); //proportion of beneficial mutations generated in coding region
+    defineConstant("CNeuRatio", 0.6); // proportion of neutral mutations generated in coding region
+
+
+
+
+  //Coding Body Follows: No User Input
+  ends = c(1999, 2999, 12999,  13999, 23999, 29999, 39999, 45999, 50999, 51999, 61999, 67999, 77999, 78999, 88999, 94999, 99999);
+  rates = c(G1Mu, CisMu, G1Mu, CisMu, G1Mu,  TransMu, G1Mu, TransMu, G1Mu, CisMu, G1Mu, TransMu, G1Mu, CisMu, G1Mu, TransMu, G1Mu);
+  initializeMutationRate(rates, ends);
+
   initializeRecombinationRate(1e-8);
 
-  //ALTERNATIVE MUTATION TYPES AND RATES(SEE NOTES)
+
   //N mutation type: neutral
-  initializeMutationType("m1", 1, "f", 0.0);
+  initializeMutationType("m1", 0.5, "f", 0.0);
   m1.color = "yellow";
   m1.convertToSubstitution = T;
   // [CIS] GAL7 deleterious
-  initializeMutationType("m2", 1, "e", 0.4);
+  initializeMutationType("m2", 0.5, "e", 0.4);
   m2.color = "red";
   // [CIS] GAL7 slightly beneficial
-  initializeMutationType("m3", 1, "g", 0.5, 1.0);
+  initializeMutationType("m3", 0.5, "g", 0.5, 1.0);
   m3.color = "green";
   // [CIS] GAL10 deleterious
-  initializeMutationType("m4", 1, "e", 0.4);
+  initializeMutationType("m4", 0.5, "e", 0.4);
   m4.color = "red";
   // [CIS] GAL10 slightly beneficial
-  initializeMutationType("m5", 1, "g", 0.5, 1.0);
+  initializeMutationType("m5", 0.5, "g", 0.5, 1.0);
   m5.color = "green";
   // [TRANS] GAL1 deleterious
-  initializeMutationType("m6", 1, "e", 0.4);
+  initializeMutationType("m6", 0.5, "e", 0.4);
   m6.color = "pink";
   // [TRANS] GAL1 slightly beneficial
-  initializeMutationType("m7", 1, "g", 0.5, 1.0);
+  initializeMutationType("m7", 0.5, "g", 0.5, 1.0);
   m7.color = "lightblue";
   // [TRANS] GAL3 deleterious
-  initializeMutationType("m8", 1, "e", 0.4);
+  initializeMutationType("m8", 0.5, "e", 0.4);
   m8.color = "pink";
   // [TRANS] GAL3 slightly beneficial
-  initializeMutationType("m9", 1, "g", 0.5, 1.0);
+  initializeMutationType("m9", 0.5, "g", 0.5, 1.0);
   m9.color = "lightblue";
   // [CIS] GAL2 deleterious
-  initializeMutationType("m10", 1, "e", 0.4);
+  initializeMutationType("m10", 0.5, "e", 0.4);
   m10.color = "red";
   // [CIS] GAL2 slightly beneficial
-  initializeMutationType("m11", 1, "g", 0.5, 1.0);
+  initializeMutationType("m11", 0.5, "g", 0.5, 1.0);
   m11.color = "green";
   // [TRANS] GAL80 deleterious
-  initializeMutationType("m12", 1, "e", 0.4);
+  initializeMutationType("m12", 0.5, "e", 0.4);
   m12.color = "pink";
   // [TRANS] GAL80 slightly beneficial
-  initializeMutationType("m13", 1, "g", 0.5, 1.0);
+  initializeMutationType("m13", 0.5, "g", 0.5, 1.0);
   m13.color = "lightblue";
   // [CIS] GAL5 deleterious
-  initializeMutationType("m14", 1, "e", 0.4);
+  initializeMutationType("m14", 0.5, "e", 0.4);
   m14.color = "red";
   // [CIS] GAL5 slightly beneficial
-  initializeMutationType("m15", 1, "g", 0.5, 1.0);
+  initializeMutationType("m15", 0.5, "g", 0.5, 1.0);
   m15.color = "green";
   // [TRANS] GAL4 deleterious
-  initializeMutationType("m16", 1, "e", 0.4);
+  initializeMutationType("m16", 0.5, "e", 0.4);
   m16.color = "pink";
   // [TRANS] GAL4 slightly beneficial
-  initializeMutationType("m17", 1, "g", 0.5, 1.0);
+  initializeMutationType("m17", 0.5, "g", 0.5, 1.0);
   m17.color = "lightblue";
 
   //GENOMIC ELEMENTS
   	initializeGenomicElementType("g1", m1, 1.0); //non-coding
-  	initializeGenomicElementType("g2", c(m1, m2, m3), c(0.6, 0.35, 0.05)); //GAL7 promoter
-  	initializeGenomicElementType("g3", c(m1, m4, m5), c(0.6, 0.35, 0.05)); //GAL10 promoter
-  	initializeGenomicElementType("g4", c(m1, m6, m7), c(0.6, 0.35, 0.05)); //GAL1 promoter
-  	initializeGenomicElementType("g5", c(m1, m6, m7), c(0.6, 0.35, 0.05)); //GAL1 coding
-  	initializeGenomicElementType("g6", c(m1, m8, m9), c(0.6, 0.35, 0.05)); //GAL3 promoter
-  	initializeGenomicElementType("g7", c(m1, m8, m9), c(0.6, 0.35, 0.05)); //GAL3 coding
-  	initializeGenomicElementType("g8", c(m1, m10, m11), c(0.6, 0.35, 0.05)); //GAL2 promoter
-  	initializeGenomicElementType("g9", c(m1, m12, m13), c(0.6, 0.35, 0.05)); //GAL80 promoter
-  	initializeGenomicElementType("g10", c(m1, m12, m13), c(0.6, 0.35, 0.05)); //GAL80 coding
-  	initializeGenomicElementType("g11", c(m1, m14, m15), c(0.6, 0.35, 0.05)); //GAL5 promoter
-  	initializeGenomicElementType("g12", c(m1, m16, m17), c(0.6, 0.35, 0.05)); //GAL4 promoter
-  	initializeGenomicElementType("g13", c(m1, m16, m17), c(0.6, 0.35, 0.05)); //GAL4 coding
+  	initializeGenomicElementType("g2", c(m1, m2, m3), c(PNeuRatio, PDelRatio, PBenRatio)); //GAL7 promoter
+  	initializeGenomicElementType("g3", c(m1, m4, m5), c(PNeuRatio, PDelRatio, PBenRatio)); //GAL10 promoter
+  	initializeGenomicElementType("g4", c(m1, m6, m7), c(PNeuRatio, PDelRatio, PBenRatio)); //GAL1 promoter
+  	initializeGenomicElementType("g5", c(m1, m6, m7), c(CNeuRatio, CDelRatio, CBenRatio)); //GAL1 coding
+  	initializeGenomicElementType("g6", c(m1, m8, m9), c(PNeuRatio, PDelRatio, PBenRatio)); //GAL3 promoter
+  	initializeGenomicElementType("g7", c(m1, m8, m9), c(CNeuRatio, CDelRatio, CBenRatio)); //GAL3 coding
+  	initializeGenomicElementType("g8", c(m1, m10, m11), c(PNeuRatio, PDelRatio, PBenRatio)); //GAL2 promoter
+  	initializeGenomicElementType("g9", c(m1, m12, m13), c(PNeuRatio, PDelRatio, PBenRatio)); //GAL80 promoter
+  	initializeGenomicElementType("g10", c(m1, m12, m13), c(CNeuRatio, CDelRatio, CBenRatio)); //GAL80 coding
+  	initializeGenomicElementType("g11", c(m1, m14, m15), c(PNeuRatio, PDelRatio, PBenRatio)); //GAL5 promoter
+  	initializeGenomicElementType("g12", c(m1, m16, m17), c(PNeuRatio, PDelRatio, PBenRatio)); //GAL4 promoter
+  	initializeGenomicElementType("g13", c(m1, m16, m17), c(CNeuRatio, CDelRatio, CBenRatio)); //GAL4 coding
  //
 
  //CHROMOSOME STRUCTURE
@@ -121,27 +146,22 @@ initialize() {
     g13.color = "dodgerblue";
  //
 
- //CONSTANTS AND VALUES
- //FUNCTIONALITY:: step one: environment
- defineConstant("glucoseFixed", 0.5); //fixed version
- glucvar = dnorm(2.0, 0.0, 1.0); //parameters can be changed
- defineConstant("glucoseVar", glucvar); //variable version
- defineConstant("galactose", 20.0); //fixed, but putting it here for future functionality
+ //CONSTANTS that are NOT changed by the user
+ defineConstant("QTL_optima", c(0.0, 20.0));
+ defineConstant("S", 0.1);   // sigma_S, the spatial competition width
 
-  defineConstant("QTL_optima", c(0.0, 20.0));
-  
   // spatial competition
          initializeInteractionType(1, "xy", reciprocal=T, maxDistance=S*3);
          i1.setInteractionFunction("n", 1.0, S);
          // spatial mate choice
          initializeInteractionType(2, "xy", reciprocal=T, maxDistance=0.1);
-  
+
  //
 } //initialize command bracket ends here
 
 //POPULATION CODE
 1 early() {
-  sim.addSubpop("p1", 10);
+  sim.addSubpop("p1", P);
    p1.individuals.setSpatialPosition(p1.pointUniform(1));
 }
 
@@ -152,13 +172,8 @@ initialize() {
 // --------------------------------------------------------------------
 //reproduction() call backs
 
-//reproduction() {
-//if (sim.generation % 1000 == 0)
-//  subpop.addCrossed(individual, subpop.sampleIndividuals(1));
-//  }
-
   reproduction() {
- 
+
 
          // choose our nearest neighbor as a mate, within the max distance
          mate = i2.nearestNeighbors(individual, 1);
@@ -172,7 +187,7 @@ else
             pos = individual.spatialPosition + rnorm(2, 0, 0.02);
             offspring.setSpatialPosition(p1.pointPeriodic(pos));
          }
-         
+
 }
 
 
@@ -184,11 +199,6 @@ else
 
 //---------------------------------------------------------------------
 //early() call backs
-
-////FITNESS SCALING: Redundant?
-//early() {
-//  p1.fitnessScaling = K / p1.individualCount;
-//}
 
      early() {
          i1.evaluate();
@@ -203,74 +213,278 @@ else
 //-------------------------------------------------------------------
 //fitness() call backs
 
-//fitness(NULL){ return 1.0;}
+//High glucose levels so mutations dont impact survival
+//fitness(NULL){
+//  if (glucoseFixed <= 0.5)
+//  return 1.0;
+//}
 
-//trying to make the fitness dependent on
+
+//General neutral mutations
 fitness(m1) { return 1.0;} //neutral
 
-fitness(m2) {
-   return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
-}
-
-fitness(m3) {
-  return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
-}
-
-fitness(m4) {
-  return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
-}
-
-fitness(m5) {
-  return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
-}
-fitness(m6) {
-  return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
-}
-
-fitness(m7) {
-  return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
-}
-fitness(m8) {
-  return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
-}
-
-fitness(m9){
-  return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
-}
-fitness(m10) {
-  return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
-}
-
-fitness(m11) {
-  return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
-}
-fitness(m12) {
-  return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
-}
-
-fitness(m13) {
-  return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
-}
-fitness(m14) {
-  return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
-}
-
-fitness(m15) {
-  return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
-}
-
-fitness(m16) {
-  return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
+//GAL Genes Inidivual fitness effects
+//GAL 7 promoter
+  //deleterious
+  fitness(m2) {
+     return 1.0 - (sim.mutationFrequencies(p1, mut) * SP);
+  }
+  //beneficial
+  fitness(m3) {
+    return 1.0 + (sim.mutationFrequencies(p1, mut) * SP);
   }
 
-fitness(m17) {
-  return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
-}
+//GAL 10 promoter
+  //deleterious
+  fitness(m4) {
+    return 1.0 - (sim.mutationFrequencies(p1, mut) * SP);
+  }
+  //beneficial
+  fitness(m5) {
+    return 1.0 + (sim.mutationFrequencies(p1, mut) * SP);
+  }
+
+//GAL 1 promoter + coding
+  //deleterious
+  fitness(m6) {
+    return 1.0 - (sim.mutationFrequencies(p1, mut) * SP);
+  }
+  //beneficial
+  fitness(m7) {
+    return 1.0 + (sim.mutationFrequencies(p1, mut) * SP);
+  }
+
+
+//GAL 3 promoter + coding
+  //deleterious
+  fitness(m8) {
+      return 1.0 - (sim.mutationFrequencies(p1, mut) * SP);
+    }
+
+  //beneficial
+  fitness(m9){
+    return 1.0 + (sim.mutationFrequencies(p1, mut) * SP);
+  }
+
+//GAL 2 promoter
+  //deleterious
+  fitness(m10) {
+    return 1.0 - (sim.mutationFrequencies(p1, mut) * SP );
+  }
+  //beneficial
+  fitness(m11) {
+    return 1.0 + (sim.mutationFrequencies(p1, mut) * SP);
+  }
+
+//GAL 80 promoter and coding
+  //deleterious
+  fitness(m12) {
+    return 1.0 - (sim.mutationFrequencies(p1, mut) * SP);
+  }
+  //beneficial
+  fitness(m13) {
+    return 1.0 + (sim.mutationFrequencies(p1, mut) * SP);
+  }
+
+//GAL 5 promoter
+  //deleterious
+  fitness(m14) {
+    return 1.0 - (sim.mutationFrequencies(p1, mut) * SP);
+  }
+  //beneficial
+  fitness(m15) {
+    return 1.0 + (sim.mutationFrequencies(p1, mut) * SP);
+  }
+
+//GAL 4 promoter + coding
+//Gets activated first when glucose is low and galactose is highe
+  //deleterious
+  fitness(m16) {
+    return 1.0 - (sim.mutationFrequencies(p1, mut) * SP);
+    }
+  //beneficial
+  fitness(m17) {
+    return 1.0 + (sim.mutationFrequencies(p1, mut) * SP);
+  }
+
+//Removed Bad/tagged sampleIndividuals
+//ie tag based mortality on the basic of mutation accumulation
+fitness(NULL) {
+  // individuals tagged for death die here
+  if (individual.tag == 0) //no lethal condition
+   return 1.0;
+  else if (individual.tag == 2)  //semi-lethal
+   return 0.3;
+  else
+    return 0.0;  //lethal
+  }
 
 
 //-----------------------------------------------------------------------
 //survival/viability call backs
+//Survival depends on 1)ENVIRONMENT and 2)NETWORK FUNCTION
 
+// 1) ENVIRONMENT
+
+//IMPACTS OF GALACTOSE
+  //High galactose levels
+    1:20000 late() {
+    if (galactose > 25 )
+      p1.fitnessScaling = 0.5;
+     else p1.fitnessScaling = 1.0;
+    }
+
+  //Normal operation is medium level output (so fitnessScaling = 1.0)
+
+  //Low galactose levels (and low to mid glucose levels by extension)
+    1:20000 late() {
+    if (galactose < 5 )
+      p1.fitnessScaling = 1.5;
+      else p1.fitnessScaling = 1.0;
+    }
+
+  //No galactose
+    late() {
+     if (galactose == 0)
+      stop("No extracellular galactose detected. Cannot run simulation.");
+    }
+  //
+//
+
+//2) NETWORK STRUCTURE
+//tag-based mortality, ie conditional mortality
+1:20000 early() {
+// initially, everybody lives
+  sim.subpopulations.individuals.tag = 0;
+
+for (ind in sim.subpopulations.individuals) {
+//Lethal mutations
+  //GAL4
+  Dgal4 = ind.genomes.mutationsOfType(m16);
+  sDgal4 = size(Dgal4);
+
+  Bgal4 = ind.genomes.mutationsOfType(m17);
+  sBgal4 = size(Bgal4);
+
+  gal4 = sBgal4 - sDgal4;
+
+  if (gal4  > L) {
+      ind.tag = 1;
+      catn("GAL4 lethal mutation. Individual " + ind.pedigreeID + " died in generation " + sim.generation); }
+  else
+    ind.tag = 0;
+
+
+  //GAL1
+  Dgal1 = ind.genomes.mutationsOfType(m6);
+  sDgal1 = size(Dgal1);
+
+  Bgal1 = ind.genomes.mutationsOfType(m7);
+  sBgal1 = size(Bgal1);
+
+  gal1 = sBgal1 - sDgal1;
+
+  if (gal1  > L) {
+      ind.tag = 1;
+      catn("GAL1 lethal mutation. Individual " + ind.pedigreeID + " died in generation " + sim.generation); }
+  else
+    ind.tag = 0;
+
+
+  //GAL2
+  Dgal2 = ind.genomes.mutationsOfType(m10);
+  sDgal2 = size(Dgal2);
+
+  Bgal2 = ind.genomes.mutationsOfType(m11);
+  sBgal2 = size(Bgal2);
+
+  gal2 = sBgal2 - sDgal2;
+
+    if (gal2  > L) {
+      ind.tag = 1;
+      catn("GAL2 lethal mutation. Individual " + ind.pedigreeID + " died in generation " + sim.generation); }
+    else
+      ind.tag = 0;
+
+  //GAL7
+  Dgal7 = ind.genomes.mutationsOfType(m2);
+  sDgal7 = size(Dgal7);
+
+  Bgal7 = ind.genomes.mutationsOfType(m3);
+  sBgal7 = size(Bgal7);
+
+  gal7 = sBgal7 - sDgal7;
+
+    if (gal7  > L) {
+      ind.tag = 1;
+      catn("GAL7 lethal mutation. Individual " + ind.pedigreeID + " died in generation " + sim.generation); }
+    else
+      ind.tag = 0;
+
+  //GAL10
+  Dgal10 = ind.genomes.mutationsOfType(m4);
+  sDgal10 = size(Dgal10);
+
+  Bgal10 = ind.genomes.mutationsOfType(m5);
+  sBgal10 = size(Bgal10);
+
+  gal10 = sBgal10 - sDgal10;
+
+  if (gal10  > L) {
+    ind.tag = 1;
+    catn("GAL10 lethal mutation. Individual " + ind.pedigreeID + " died in generation " + sim.generation); }
+  else
+    ind.tag = 0;
+
+//SEMI Lethal
+
+  //GAL3
+  Dgal3 = ind.genomes.mutationsOfType(m8);
+  sDgal3 = size(Dgal3);
+
+  Bgal3 = ind.genomes.mutationsOfType(m9);
+  sBgal3 = size(Bgal3);
+
+  gal3 = sBgal3 - sDgal3;
+
+  if (gal3  > L) {
+    ind.tag = 2;
+    catn("GAL3 semi-lethal mutation. Individual " + ind.pedigreeID + " reduced fitness after generation " + sim.generation); }
+  else
+    ind.tag = 0;
+
+  //GAL80
+  Dgal80 = ind.genomes.mutationsOfType(m12);
+  sDgal80 = size(Dgal80);
+
+  Bgal80 = ind.genomes.mutationsOfType(m13);
+  sBgal80 = size(Bgal80);
+
+  gal80 = sBgal80 - sDgal80;
+
+  if (gal80  > L) {
+    ind.tag = 2;
+    catn("GAL80 semi-lethal mutation. Individual " + ind.pedigreeID + " reduced fitness after generation " + sim.generation); }
+  else
+    ind.tag = 0;
+
+//NETWORKFUNCTION
+  network = gal10 + gal7 + gal4 + gal1 + gal2 + gal3 + gal80;
+  ind.setValue("Network", network);
+   
+
+  if (network  > LL) {
+    ind.tag = 1;
+    catn("Network functionality too low. " + ind.pedigreeID + " died in generation " + sim.generation); }
+  else
+    ind.tag = 0;
+
+
+
+
+} //for bracket closes here
+
+}
 
 
 //---------------------------------------------------------------------
@@ -292,8 +506,8 @@ late() {
 if (sum(p1.individualCount) == 0)
  stop("Complete extinction in generation " + sim.generation + ".");
  }
- 
- 
+
+//spatial code
  late() {
          // move around a bit
         for (ind in p1.individuals)
@@ -308,89 +522,75 @@ if (sum(p1.individualCount) == 0)
 
 
 
- 
-200000 late() {sim.outputFull();}
-
-
-//     HISTORY PLOT CODE FOLLOWS
-
-//FITNESS AND PHENOTYPE CODE (to be patched up)
-//late() {
-  //for (ind in sim.subpopulations.individuals) {
-   //// construct phenotypes from additive effects of QTL mutations
-     //m2muts = ind.genomes.mutationsOfType(m2);
-     //m3muts = ind.genomes.mutationsOfType(m3);
-
-    // if (size(m2muts) == 0){
-      //   phenotype0 = 0.0; }
-       //else {
-         //phenotype0 = size(m2muts); }
-
-      // if (size(m3muts) == 0){
-        // phenotype1 = 0.0; }
-       //else {
-         //phenotype1 = size(m3muts);}
-
-     //ind.setValue("phenotype0", phenotype0);
-     //ind.setValue("phenotype1", phenotype1);
-    //
-
-    // calculate fitness effects
-    // effect0 = 1.0 + dnorm(QTL_optima[0] - phenotype0, 0.0, 20.0) * 2.0;
-     //effect1 = 1.0 + dnorm(QTL_optima[1] - phenotype1, 0.0, 20.0) * 2.0;
-     //ind.fitnessScaling = 80 + effect1 - effect0;
-//  } //for bracket closes here
-//} //late() bracket closes here
+//ouput code for Parameters
+1 late() {
+  catn("List of Parameters: ");
+  catn();
+  catn("Initial Population Size: " + P);
+  catn("Carrying Capacity: " + K);
+  catn("Initial Extracellular Glucose Level: " + glucose);
+  catn("Initial Extracellular Galactose Level: " + galactose);
+  catn("Selective Pressure Scalar: " + SP);
+  catn("Lethal Mutation Cut Off #: " + L);
+  catn("Lethal Total Network Cut Off #: " + LL);
+  catn("Cis Mutation Rate: " + CisMu);
+  catn("Trans Mutation Rate: " + TransMu);
+  catn("Non Coding Mutation Rate: " + G1Mu);
+  catn("Ratio of N:D:B mutations in promoter regions : "+ PNeuRatio + PDelRatio + PBenRatio);
+  catn("Ratio of N:D:B mutations in coding regions : " +CNeuRatio + CDelRatio + CBenRatio);
+    catn();
+      catn();
+    catn("End initial output");
+}
 
 
 //HISTORY PLOT CODE + OUTPUT CODE
-//1:10000 late() {
-  // output, run every 1000 generations
-  //  if (sim.generation % 1000 != 0) return;
+1:20000 late() {
+    // output, run every 1000 generations
+    
+  if (sim.generation % 100 != 0) return;
 
-  // print final phenotypes versus their optima + mean fitness
-   //inds = sim.subpopulations.individuals;
-   //p0_mean = mean(inds.getValue("phenotype0"));
-   //p1_mean = mean(inds.getValue("phenotype1"));
-   //fit_mean = mean(inds.fitnessScaling);
+inds = sim.subpopulations.individuals;
+ meanNetwork = mean(inds.getValue("Network"));   
+  
 
-//  // ouput code
-  // catn();
-   //catn("Generation: " + sim.generation);
-   //catn("Mean frequency of deleterious mutations: " + p0_mean + " (" + QTL_optima[0] + ")");
-   //catn("Mean frequency of beneficial mutations: " + p1_mean + " (" + QTL_optima[1] + ")");
-   //catn("Mean fitness of population: " + fit_mean);
+   catn();
+   catn();
+   catn("Generation: " + sim.generation);
+catn("Mean network binding affinity: " + meanNetwork);
+   catn();
+   catn();
 
   //History plot code
-   //history = sim.getValue("history");
-   //history = rbind(history, c(p0_mean, p1_mean));
-   //sim.setValue("history", history);
+   history = sim.getValue("history");
+   history = rbind(history, c(sim.generation, meanNetwork));
+   sim.setValue("history", history);
 
    //aes data for history plot -> sends data to R
-     //rstr = paste(c('{',
-     //'x <- c(' + paste(history[,0], sep=", ") + ')',
-    // 'y <- c(' + paste(history[,1], sep=", ") + ')',
-     //'quartz(width=4, height=4, type="pdf", file="' + pdfPath + '")',
-     //'par(mar=c(4.0, 4.0, 1.5, 1.5))',
-     //'plot(x=c(-10,100), y=c(-10,100), type="n", xlab="x", ylab="y")',
-     //'points(x=0,y=0,col="red", pch=19, cex=2)',
+     rstr = paste(c('{',
+     'x <- c(' + paste(history[,0], sep=", ") + ')',
+     'y <- c(' + paste(history[,1], sep=", ") + ')',
+     'quartz(width=4, height=4, type="pdf", file="' + pdfPath + '")',
+     'par(mar=c(4.0, 4.0, 1.5, 1.5))',
+     'plot(x=c(0,10000), y=c(-10,10), type="n", xlab="Number of Generation", ylab="Mean Network Binding Affinity")',
+     'points(x=0,y=0,col="red", pch=19, cex=2)',
      //'points(x=0,y=80,col="green", pch=19, cex=2)',
-     //'points(x=x, y=y, col="black", pch=19, cex=0.5)',
-     //'lines(x=x, y=y)',
-     //'dev.off()',
-    // '}'), sep="\n");
+     'points(x=x, y=y, col="black", pch=19, cex=0.5)',
+     'lines(x=x, y=y)',
+     'dev.off()',
+     '}'), sep="\n");
 
-     //scriptPath = writeTempFile("plot_", ".R", rstr);
-     //system("/usr/local/bin/Rscript", args=scriptPath);
-    //
-  //
-//} //late code closes here
+     scriptPath = writeTempFile("plot_", ".R", rstr);
+     system("/usr/local/bin/Rscript", args=scriptPath);
+
+
+} //late code closes here
 
 //last bit of history code: maybe try merging with section above?
-//1 late() {
- //sim.setValue("history", matrix(c(0.0, 0.0), nrow=1));
-  //defineConstant("pdfPath", writeTempFile("plot_", ".pdf", ""));
+1 late() {
+sim.setValue("history", matrix(c(0.0, 0.0), nrow=1));
+defineConstant("pdfPath", writeTempFile("plot_", ".pdf", ""));
 
-// if (exists("slimgui"))
-//  slimgui.openDocument(pdfPath);
-//}
+ if (exists("slimgui"))
+  slimgui.openDocument(pdfPath);
+}
