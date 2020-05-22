@@ -470,8 +470,8 @@ for (ind in sim.subpopulations.individuals) {
 
 //NETWORKFUNCTION
   network = gal10 + gal7 + gal4 + gal1 + gal2 + gal3 + gal80;
-   ind.setValue("Network", network);
-
+  ind.setValue("Network", network);
+   
 
   if (network  > LL) {
     ind.tag = 1;
@@ -536,25 +536,28 @@ if (sum(p1.individualCount) == 0)
   catn("Cis Mutation Rate: " + CisMu);
   catn("Trans Mutation Rate: " + TransMu);
   catn("Non Coding Mutation Rate: " + G1Mu);
-  catn("Ratio of N:D:B mutations in promoter regions : " PNeuRatio + PDelRatio + PBenRatio);
-  catn("Ratio of N:D:B mutations in coding regions : " CNeuRatio + CDelRatio + CBenRatio);
+  catn("Ratio of N:D:B mutations in promoter regions : "+ PNeuRatio + PDelRatio + PBenRatio);
+  catn("Ratio of N:D:B mutations in coding regions : " +CNeuRatio + CDelRatio + CBenRatio);
     catn();
       catn();
     catn("End initial output");
 }
 
-20000 late() {sim.outputFull();}
 
 //HISTORY PLOT CODE + OUTPUT CODE
 1:20000 late() {
-  meanNetwork = mean(inds.getValue("Network"));
-  // output, run every 1000 generations
+    // output, run every 1000 generations
+    
+  if (sim.generation % 100 != 0) return;
 
-  if (sim.generation % 1000 != 0) return;
+inds = sim.subpopulations.individuals;
+ meanNetwork = mean(inds.getValue("Network"));   
+  
+
    catn();
    catn();
    catn("Generation: " + sim.generation);
-   catn("Mean network binding affinity: " + meanNetwork);
+catn("Mean network binding affinity: " + meanNetwork);
    catn();
    catn();
 
@@ -569,7 +572,7 @@ if (sum(p1.individualCount) == 0)
      'y <- c(' + paste(history[,1], sep=", ") + ')',
      'quartz(width=4, height=4, type="pdf", file="' + pdfPath + '")',
      'par(mar=c(4.0, 4.0, 1.5, 1.5))',
-     'plot(x=c(0,1000), y=c(0,100), type="n", xlab="Number of Generation", ylab="Mean Network Binding Affinity")',
+     'plot(x=c(0,10000), y=c(-10,10), type="n", xlab="Number of Generation", ylab="Mean Network Binding Affinity")',
      'points(x=0,y=0,col="red", pch=19, cex=2)',
      //'points(x=0,y=80,col="green", pch=19, cex=2)',
      'points(x=x, y=y, col="black", pch=19, cex=0.5)',
