@@ -413,7 +413,7 @@ for (ind in sim.subpopulations.individuals) {
   Bgal7 = ind.genomes.mutationsOfType(m3);
   sBgal7 = size(Bgal7);
 
-  gal47 = sBgal7 - sDgal7;
+  gal7 = sBgal7 - sDgal7;
 
     if (gal7  > L) {
       ind.tag = 1;
@@ -469,7 +469,9 @@ for (ind in sim.subpopulations.individuals) {
     ind.tag = 0;
 
 //NETWORKFUNCTION
-  network = gal10 + gal7+ gal4 + gal1 + gal2;
+  network = gal10 + gal7 + gal4 + gal1 + gal2 + gal3 + gal80;
+   ind.setValue("Network", network);
+
 
   if (network  > LL) {
     ind.tag = 1;
@@ -505,7 +507,7 @@ if (sum(p1.individualCount) == 0)
  stop("Complete extinction in generation " + sim.generation + ".");
  }
 
-
+//spatial code
  late() {
          // move around a bit
         for (ind in p1.individuals)
@@ -520,89 +522,72 @@ if (sum(p1.individualCount) == 0)
 
 
 
+//ouput code for Parameters
+1 late() {
+  catn("List of Parameters: ");
+  catn();
+  catn("Initial Population Size: " + P);
+  catn("Carrying Capacity: " + K);
+  catn("Initial Extracellular Glucose Level: " + glucose);
+  catn("Initial Extracellular Galactose Level: " + galactose);
+  catn("Selective Pressure Scalar: " + SP);
+  catn("Lethal Mutation Cut Off #: " + L);
+  catn("Lethal Total Network Cut Off #: " + LL);
+  catn("Cis Mutation Rate: " + CisMu);
+  catn("Trans Mutation Rate: " + TransMu);
+  catn("Non Coding Mutation Rate: " + G1Mu);
+  catn("Ratio of N:D:B mutations in promoter regions : " PNeuRatio + PDelRatio + PBenRatio);
+  catn("Ratio of N:D:B mutations in coding regions : " CNeuRatio + CDelRatio + CBenRatio);
+    catn();
+      catn();
+    catn("End initial output");
+}
 
-200000 late() {sim.outputFull();}
-
-
-//     HISTORY PLOT CODE FOLLOWS
-
-//FITNESS AND PHENOTYPE CODE (to be patched up)
-//late() {
-  //for (ind in sim.subpopulations.individuals) {
-   //// construct phenotypes from additive effects of QTL mutations
-     //m2muts = ind.genomes.mutationsOfType(m2);
-     //m3muts = ind.genomes.mutationsOfType(m3);
-
-    // if (size(m2muts) == 0){
-      //   phenotype0 = 0.0; }
-       //else {
-         //phenotype0 = size(m2muts); }
-
-      // if (size(m3muts) == 0){
-        // phenotype1 = 0.0; }
-       //else {
-         //phenotype1 = size(m3muts);}
-
-     //ind.setValue("phenotype0", phenotype0);
-     //ind.setValue("phenotype1", phenotype1);
-    //
-
-    // calculate fitness effects
-    // effect0 = 1.0 + dnorm(QTL_optima[0] - phenotype0, 0.0, 20.0) * 2.0;
-     //effect1 = 1.0 + dnorm(QTL_optima[1] - phenotype1, 0.0, 20.0) * 2.0;
-     //ind.fitnessScaling = 80 + effect1 - effect0;
-//  } //for bracket closes here
-//} //late() bracket closes here
-
+20000 late() {sim.outputFull();}
 
 //HISTORY PLOT CODE + OUTPUT CODE
-//1:10000 late() {
+1:20000 late() {
+  meanNetwork = mean(inds.getValue("Network"));
   // output, run every 1000 generations
-  //  if (sim.generation % 1000 != 0) return;
 
-  // print final phenotypes versus their optima + mean fitness
-   //inds = sim.subpopulations.individuals;
-   //p0_mean = mean(inds.getValue("phenotype0"));
-   //p1_mean = mean(inds.getValue("phenotype1"));
-   //fit_mean = mean(inds.fitnessScaling);
-
-//  // ouput code
-  // catn();
-   //catn("Generation: " + sim.generation);
-   //catn("Mean frequency of deleterious mutations: " + p0_mean + " (" + QTL_optima[0] + ")");
-   //catn("Mean frequency of beneficial mutations: " + p1_mean + " (" + QTL_optima[1] + ")");
-   //catn("Mean fitness of population: " + fit_mean);
+  if (sim.generation % 1000 != 0) return;
+   catn();
+   catn();
+   catn("Generation: " + sim.generation);
+   catn("Mean network binding affinity: " + meanNetwork);
+   catn();
+   catn();
 
   //History plot code
-   //history = sim.getValue("history");
-   //history = rbind(history, c(p0_mean, p1_mean));
-   //sim.setValue("history", history);
+   history = sim.getValue("history");
+   history = rbind(history, c(sim.generation, meanNetwork));
+   sim.setValue("history", history);
 
    //aes data for history plot -> sends data to R
-     //rstr = paste(c('{',
-     //'x <- c(' + paste(history[,0], sep=", ") + ')',
-    // 'y <- c(' + paste(history[,1], sep=", ") + ')',
-     //'quartz(width=4, height=4, type="pdf", file="' + pdfPath + '")',
-     //'par(mar=c(4.0, 4.0, 1.5, 1.5))',
-     //'plot(x=c(-10,100), y=c(-10,100), type="n", xlab="x", ylab="y")',
-     //'points(x=0,y=0,col="red", pch=19, cex=2)',
+     rstr = paste(c('{',
+     'x <- c(' + paste(history[,0], sep=", ") + ')',
+     'y <- c(' + paste(history[,1], sep=", ") + ')',
+     'quartz(width=4, height=4, type="pdf", file="' + pdfPath + '")',
+     'par(mar=c(4.0, 4.0, 1.5, 1.5))',
+     'plot(x=c(0,1000), y=c(0,100), type="n", xlab="Number of Generation", ylab="Mean Network Binding Affinity")',
+     'points(x=0,y=0,col="red", pch=19, cex=2)',
      //'points(x=0,y=80,col="green", pch=19, cex=2)',
-     //'points(x=x, y=y, col="black", pch=19, cex=0.5)',
-     //'lines(x=x, y=y)',
-     //'dev.off()',
-    // '}'), sep="\n");
+     'points(x=x, y=y, col="black", pch=19, cex=0.5)',
+     'lines(x=x, y=y)',
+     'dev.off()',
+     '}'), sep="\n");
 
-     //scriptPath = writeTempFile("plot_", ".R", rstr);
-     //system("/usr/local/bin/Rscript", args=scriptPath);
-    //
-  //
-//} //late code closes here
+     scriptPath = writeTempFile("plot_", ".R", rstr);
+     system("/usr/local/bin/Rscript", args=scriptPath);
+
+
+} //late code closes here
 
 //last bit of history code: maybe try merging with section above?
-//1 late() {
- //sim.setValue("history", matrix(c(0.0, 0.0), nrow=1));
-  //defineConstant("pdfPath", writeTempFile("plot_", ".pdf", ""));
+1 late() {
+sim.setValue("history", matrix(c(0.0, 0.0), nrow=1));
+defineConstant("pdfPath", writeTempFile("plot_", ".pdf", ""));
 
-// if (exists("slimgui"))
-//  slimgui.openDocument(pdfPath);
-//}
+ if (exists("slimgui"))
+  slimgui.openDocument(pdfPath);
+}
