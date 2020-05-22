@@ -3,7 +3,7 @@
 // START COMMANDS - DNI
 initialize() {
   initializeSLiMModelType("nonWF");
-   initializeSLiMOptions(dimensionality="xy", periodicity="xy");
+   initializeSLiMOptions(keepPedigrees=T, dimensionality="xy", periodicity="xy");
   defineConstant("K", 100);
    defineConstant("S", 0.1);   // sigma_S, the spatial competition width
 
@@ -240,7 +240,7 @@ fitness(m1) { return 1.0;} //neutral
   fitness(m8) {
       return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
     }
-  }
+    
   //beneficial
   fitness(m9){
     return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
@@ -290,7 +290,7 @@ fitness(m1) { return 1.0;} //neutral
 //Removed Bad/tagged sampleIndividuals
 fitness(NULL) {
   // individuals tagged for death die here
-  if (individual.tag == 1)
+  if (individual.tag == 0)
    return 1.0;
   else
    return 0.0;
@@ -333,7 +333,7 @@ fitness(NULL) {
 //work with tags? like set up tag loops and then rescale individual fitness results
 
 //tag-based mortality
-1:20000 late() {
+1:20000 early() {
 // initially, everybody lives
   sim.subpopulations.individuals.tag = 0;
 
@@ -342,12 +342,11 @@ for (ind in sim.subpopulations.individuals) {
   gal4 = ind.genomes.mutationsOfType(m4);
   sgal4 = size(gal4);
 
-  if (sgal4  > 10) {
+  if (sgal4  > 3) {
       ind.tag = 1;
-      catn("Somebody gonna die"); }
-  else {
-    ind.tag = 0;
-  }
+      catn("GAL4 lethal mutation. Individual " + ind.pedigreeID + " died in generation " + sim.generation); }
+  else
+    ind.tag = 0;}
 
 } //for bracket closes here
 
