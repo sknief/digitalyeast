@@ -3,14 +3,38 @@
 // START COMMANDS - DNI
 initialize() {
   initializeSLiMModelType("nonWF");
-   initializeSLiMOptions(keepPedigrees=T, dimensionality="xy", periodicity="xy");
-  defineConstant("K", 100);
-   defineConstant("S", 0.1);   // sigma_S, the spatial competition width
+  initializeSLiMOptions(keepPedigrees=T, dimensionality="xy", periodicity="xy");
 
-  initializeMutationRate(1e-5);
+  //CONSTANTS TO DEFINE : USER INPUT here
+    defineConstant("P", 10); //initial population size
+    defineConstant("K", 100); //carrying capacity
+    defineConstant("glucose", 0.5); //extracellular glucose
+    defineConstant("galactose", 20.0); //High: >25, Low <5, None = 0
+    defineConstant("SP", 0.1); //Selective pressure scalar, 0.1 is standard, increase for higher selective pressure
+    defineConstant("L", 3); //lethal mutation cutoff number
+    defineConstant("CisMu", 1e-5); //mutation rate of cis element
+    defineConstant("TransMu", 1e-5); //mutation rate of trans ELEMENTS
+    defineConstant("GlMu", 1e-5); //mutation rate of noncoding regions
+    //note: the next three have to add up to 1
+    defineConstant("PDelRatio", 0.35) //proportion of deleterious mutations generated in promoter region
+    defineConstant("PBenRatio", 0.05) //proportion of beneficial mutations generated in promoter region
+    defineConstant("PNeuRatio", 0.6) // proportion of neutral mutations generated in promoter region
+    //note: these next three also have to add up to 1
+    defineConstant("CDelRatio", 0.35) //proportion of deleterious mutations generated in coding region
+    defineConstant("CBenRatio", 0.05) //proportion of beneficial mutations generated in coding region
+    defineConstant("CNeuRatio", 0.6) // proportion of neutral mutations generated in coding region
+
+
+
+
+  //Coding Body Follows: No User Input
+  ends = c(1999, 2999, 12999,  13999, 23999, 29999, 39999, 45999, 50999, 51999, 61999, 67999, 77999, 78999, 88999, 94999, 99999);
+  rates = c(G1Mu, CisMu, G1Mu, CisMu, G1Mu,  TransMu, G1Mu, TransMu, G1Mu, CisMu, G1Mu, TransMu, G1Mu, CisMu, G1Mu, TransMu, G1Mu);
+  initializeMutationRate(rates, ends);
+
   initializeRecombinationRate(1e-8);
 
-  //ALTERNATIVE MUTATION TYPES AND RATES(SEE NOTES)
+
   //N mutation type: neutral
   initializeMutationType("m1", 0.5, "f", 0.0);
   m1.color = "yellow";
@@ -66,18 +90,18 @@ initialize() {
 
   //GENOMIC ELEMENTS
   	initializeGenomicElementType("g1", m1, 1.0); //non-coding
-  	initializeGenomicElementType("g2", c(m1, m2, m3), c(0.6, 0.35, 0.05)); //GAL7 promoter
-  	initializeGenomicElementType("g3", c(m1, m4, m5), c(0.6, 0.35, 0.05)); //GAL10 promoter
-  	initializeGenomicElementType("g4", c(m1, m6, m7), c(0.6, 0.35, 0.05)); //GAL1 promoter
-  	initializeGenomicElementType("g5", c(m1, m6, m7), c(0.6, 0.35, 0.05)); //GAL1 coding
-  	initializeGenomicElementType("g6", c(m1, m8, m9), c(0.6, 0.35, 0.05)); //GAL3 promoter
-  	initializeGenomicElementType("g7", c(m1, m8, m9), c(0.6, 0.35, 0.05)); //GAL3 coding
-  	initializeGenomicElementType("g8", c(m1, m10, m11), c(0.6, 0.35, 0.05)); //GAL2 promoter
-  	initializeGenomicElementType("g9", c(m1, m12, m13), c(0.6, 0.35, 0.05)); //GAL80 promoter
-  	initializeGenomicElementType("g10", c(m1, m12, m13), c(0.6, 0.35, 0.05)); //GAL80 coding
-  	initializeGenomicElementType("g11", c(m1, m14, m15), c(0.6, 0.35, 0.05)); //GAL5 promoter
-  	initializeGenomicElementType("g12", c(m1, m16, m17), c(0.6, 0.35, 0.05)); //GAL4 promoter
-  	initializeGenomicElementType("g13", c(m1, m16, m17), c(0.6, 0.35, 0.05)); //GAL4 coding
+  	initializeGenomicElementType("g2", c(m1, m2, m3), c(PNeuRatio, PDelRatio, PBenRatio)); //GAL7 promoter
+  	initializeGenomicElementType("g3", c(m1, m4, m5), c(PNeuRatio, PDelRatio, PBenRatio)); //GAL10 promoter
+  	initializeGenomicElementType("g4", c(m1, m6, m7), cPNeuRatio, PDelRatio, PBenRatio)); //GAL1 promoter
+  	initializeGenomicElementType("g5", c(m1, m6, m7), c(CNeuRatio, CDelRatio, CBenRatio)); //GAL1 coding
+  	initializeGenomicElementType("g6", c(m1, m8, m9), c(PNeuRatio, PDelRatio, PBenRatio)); //GAL3 promoter
+  	initializeGenomicElementType("g7", c(m1, m8, m9), c(CNeuRatio, CDelRatio, CBenRatio)); //GAL3 coding
+  	initializeGenomicElementType("g8", c(m1, m10, m11), c(PNeuRatio, PDelRatio, PBenRatio)); //GAL2 promoter
+  	initializeGenomicElementType("g9", c(m1, m12, m13), c(PNeuRatio, PDelRatio, PBenRatio)); //GAL80 promoter
+  	initializeGenomicElementType("g10", c(m1, m12, m13), c(CNeuRatio, CDelRatio, CBenRatio)); //GAL80 coding
+  	initializeGenomicElementType("g11", c(m1, m14, m15), c(PNeuRatio, PDelRatio, PBenRatio)); //GAL5 promoter
+  	initializeGenomicElementType("g12", c(m1, m16, m17), cPNeuRatio, PDelRatio, PBenRatio)); //GAL4 promoter
+  	initializeGenomicElementType("g13", c(m1, m16, m17), c(CNeuRatio, CDelRatio, CBenRatio)); //GAL4 coding
  //
 
  //CHROMOSOME STRUCTURE
@@ -121,14 +145,9 @@ initialize() {
     g13.color = "dodgerblue";
  //
 
- //CONSTANTS AND VALUES
- //FUNCTIONALITY:: step one: environment
- defineConstant("glucoseFixed", 0.5); //fixed version
- glucvar = dnorm(2.0, 0.0, 1.0); //parameters can be changed
- defineConstant("glucoseVar", glucvar); //variable version
- defineConstant("galactose", 20.0); //fixed, but putting it here for future functionality
-
-  defineConstant("QTL_optima", c(0.0, 20.0));
+ //CONSTANTS that are NOT changed by the user
+ defineConstant("QTL_optima", c(0.0, 20.0));
+ defineConstant("S", 0.1);   // sigma_S, the spatial competition width
 
   // spatial competition
          initializeInteractionType(1, "xy", reciprocal=T, maxDistance=S*3);
@@ -141,7 +160,7 @@ initialize() {
 
 //POPULATION CODE
 1 early() {
-  sim.addSubpop("p1", 100);
+  sim.addSubpop("p1", P);
    p1.individuals.setSpatialPosition(p1.pointUniform(1));
 }
 
@@ -207,84 +226,84 @@ fitness(m1) { return 1.0;} //neutral
 //GAL 7 promoter
   //deleterious
   fitness(m2) {
-     return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
+     return 1.0 - (sim.mutationFrequencies(p1, mut) * SP);
   }
   //beneficial
   fitness(m3) {
-    return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
+    return 1.0 + (sim.mutationFrequencies(p1, mut) * SP);
   }
 
 //GAL 10 promoter
   //deleterious
   fitness(m4) {
-    return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
+    return 1.0 - (sim.mutationFrequencies(p1, mut) * SP);
   }
   //beneficial
   fitness(m5) {
-    return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
+    return 1.0 + (sim.mutationFrequencies(p1, mut) * SP);
   }
 
 //GAL 1 promoter + coding
   //deleterious
   fitness(m6) {
-    return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
+    return 1.0 - (sim.mutationFrequencies(p1, mut) * SP);
   }
   //beneficial
   fitness(m7) {
-    return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
+    return 1.0 + (sim.mutationFrequencies(p1, mut) * SP);
   }
 
 
 //GAL 3 promoter + coding
   //deleterious
   fitness(m8) {
-      return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
+      return 1.0 - (sim.mutationFrequencies(p1, mut) * SP);
     }
-    
+
   //beneficial
   fitness(m9){
-    return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
+    return 1.0 + (sim.mutationFrequencies(p1, mut) * SP);
   }
 
 //GAL 2 promoter
   //deleterious
   fitness(m10) {
-    return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
+    return 1.0 - (sim.mutationFrequencies(p1, mut) * SP );
   }
   //beneficial
   fitness(m11) {
-    return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
+    return 1.0 + (sim.mutationFrequencies(p1, mut) * SP);
   }
 
 //GAL 80 promoter and coding
   //deleterious
   fitness(m12) {
-    return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
+    return 1.0 - (sim.mutationFrequencies(p1, mut) * SP);
   }
   //beneficial
   fitness(m13) {
-    return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
+    return 1.0 + (sim.mutationFrequencies(p1, mut) * SP);
   }
 
 //GAL 5 promoter
   //deleterious
   fitness(m14) {
-    return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
+    return 1.0 - (sim.mutationFrequencies(p1, mut) * SP);
   }
   //beneficial
   fitness(m15) {
-    return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
+    return 1.0 + (sim.mutationFrequencies(p1, mut) * SP);
   }
 
 //GAL 4 promoter + coding
 //Gets activated first when glucose is low and galactose is highe
   //deleterious
   fitness(m16) {
-    return 1.0 - (sim.mutationFrequencies(p1, mut)*0.1);
+    return 1.0 - (sim.mutationFrequencies(p1, mut) * SP);
     }
   //beneficial
   fitness(m17) {
-    return 1.0 + (sim.mutationFrequencies(p1, mut)*0.1);
+    return 1.0 + (sim.mutationFrequencies(p1, mut) * SP);
   }
 
 //Removed Bad/tagged sampleIndividuals
@@ -342,7 +361,7 @@ for (ind in sim.subpopulations.individuals) {
   gal4 = ind.genomes.mutationsOfType(m4);
   sgal4 = size(gal4);
 
-  if (sgal4  > 3) {
+  if (sgal4  > L) {
       ind.tag = 1;
       catn("GAL4 lethal mutation. Individual " + ind.pedigreeID + " died in generation " + sim.generation); }
   else
