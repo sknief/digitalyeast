@@ -223,7 +223,7 @@ else
 //General neutral mutations
 fitness(m1) { return 1.0;} //neutral
 
-//GAL Network fitness effects
+//GAL Genes Inidivual fitness effects
 //GAL 7 promoter
   //deleterious
   fitness(m2) {
@@ -308,6 +308,7 @@ fitness(m1) { return 1.0;} //neutral
   }
 
 //Removed Bad/tagged sampleIndividuals
+//ie tag based mortality on the basic of mutation accumulation
 fitness(NULL) {
   // individuals tagged for death die here
   if (individual.tag == 0) //no lethal condition
