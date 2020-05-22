@@ -437,9 +437,38 @@ for (ind in sim.subpopulations.individuals) {
 
 //SEMI Lethal
 
+  //GAL3
+  Dgal3 = ind.genomes.mutationsOfType(m8);
+  sDgal3 = size(Dgal3);
+
+  Bgal3 = ind.genomes.mutationsOfType(m9);
+  sBgal3 = size(Bgal3);
+
+  gal3 = sBgal3 - sDgal3;
+
+  if (gal3  > L) {
+    ind.tag = 2;
+    catn("GAL3 semi-lethal mutation. Individual " + ind.pedigreeID + " reduced fitness after generation " + sim.generation); }
+  else
+    ind.tag = 0;
+
+  //GAL80
+  Dgal80 = ind.genomes.mutationsOfType(m12);
+  sDgal80 = size(Dgal80);
+
+  Bgal80 = ind.genomes.mutationsOfType(m13);
+  sBgal80 = size(Bgal80);
+
+  gal80 = sBgal80 - sDgal80;
+
+  if (gal80  > L) {
+    ind.tag = 2;
+    catn("GAL80 semi-lethal mutation. Individual " + ind.pedigreeID + " reduced fitness after generation " + sim.generation); }
+  else
+    ind.tag = 0;
 
 //NETWORKFUNCTION
-  network = sgal10 + sgal7+ sgal4 + sgal1 + sgal2;
+  network = gal10 + gal7+ gal4 + gal1 + gal2;
 
   if (network  > LL) {
     ind.tag = 1;
