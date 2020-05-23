@@ -87,27 +87,97 @@ Take care to not remove the // of each line; if you do, the simulation will disp
 Any given simulation run might produce output similar to the following. Note that this is not the complete output, but simply a fraction of the output. 
 
 ```
-//CONSTANTS TO DEFINE : USER INPUT here
-    defineConstant("P", 10); //initial population size
-    defineConstant("K", 100); //carrying capacity
-    defineConstant("glucose", 0.5); //extracellular glucose
-    defineConstant("galactose", 20.0); //High: >25, Low <5, None = 0
-    defineConstant("SP", 0.1); //Selective pressure scalar, 0.1 is standard, increase for higher selective pressure
-    defineConstant("L", 3); //lethal mutation cutoff number for individual gene binding affinity
-     defineConstant("LL", 7); //lethal mutation cutoff number for network function
-    defineConstant("CisMu", 1e-5); //mutation rate of cis element
-    defineConstant("TransMu", 1e-5); //mutation rate of trans ELEMENTS
-    defineConstant("G1Mu", 1e-5); //mutation rate of noncoding regions
-    //note: the next three have to add up to 1
-    defineConstant("PDelRatio", 0.25); //proportion of deleterious mutations generated in promoter region
-    defineConstant("PBenRatio", 0.15); //proportion of beneficial mutations generated in promoter region
-    defineConstant("PNeuRatio", 0.6); // proportion of neutral mutations generated in promoter region
-    //note: these next three also have to add up to 1
-    defineConstant("CDelRatio", 0.25); //proportion of deleterious mutations generated in coding region
-    defineConstant("CBenRatio", 0.15); //proportion of beneficial mutations generated in coding region
-    defineConstant("CNeuRatio", 0.6); // proportion of neutral mutations generated in coding region
+// Starting run at generation <start>:
+1 
+
+List of Parameters: 
+
+Initial Population Size: 10
+Carrying Capacity: 100
+Initial Extracellular Glucose Level: 0.5
+Initial Extracellular Galactose Level: 20
+Selective Pressure Scalar: 0.1
+Lethal Mutation Cut Off #: 3
+Lethal Total Network Cut Off #: 7
+Cis Mutation Rate: 1e-05
+Trans Mutation Rate: 1e-05
+Non Coding Mutation Rate: 1e-05
+Ratio of N:D:B mutations in promoter regions : 0.60.250.15
+Ratio of N:D:B mutations in coding regions : 0.60.250.15
+
+
+End initial output
+
+
+Generation: 100
+Mean network binding affinity: 1.1
+
+
+
+
+Generation: 200
+Mean network binding affinity: 0.683333
+
+
+GAL1 lethal mutation. Individual 777 died in generation 243
+Network functionality too low. 777 died in generation 243
+GAL3 semi-lethal mutation. Individual 830 reduced fitness after generation 250
+GAL3 semi-lethal mutation. Individual 830 reduced fitness after generation 251
+GAL4 lethal mutation. Individual 854 died in generation 254
+GAL4 lethal mutation. Individual 854 died in generation 255
+GAL4 lethal mutation. Individual 854 died in generation 256
+GAL4 lethal mutation. Individual 854 died in generation 257
+GAL4 lethal mutation. Individual 854 died in generation 258
+GAL4 lethal mutation. Individual 1093 died in generation 285
+GAL4 lethal mutation. Individual 1093 died in generation 286
+
+
+Generation: 300
+Mean network binding affinity: 0.53012
+
+
+GAL3 semi-lethal mutation. Individual 1214 reduced fitness after generation 302
+GAL3 semi-lethal mutation. Individual 1214 reduced fitness after generation 303
+GAL3 semi-lethal mutation. Individual 1214 reduced fitness after generation 304
+GAL3 semi-lethal mutation. Individual 1214 reduced fitness after generation 305
+GAL3 semi-lethal mutation. Individual 1214 reduced fitness after generation 306
+GAL3 semi-lethal mutation. Individual 1214 reduced fitness after generation 307
+GAL3 semi-lethal mutation. Individual 1262 reduced fitness after generation 307
+GAL3 semi-lethal mutation. Individual 1214 reduced fitness after generation 308
+GAL3 semi-lethal mutation. Individual 1262 reduced fitness after generation 308
+GAL3 semi-lethal mutation. Individual 1214 reduced fitness after generation 309
+GAL3 semi-lethal mutation. Individual 1262 reduced fitness after generation 309
+GAL3 semi-lethal mutation. Individual 1214 reduced fitness after generation 310
+GAL3 semi-lethal mutation. Individual 1262 reduced fitness after generation 310
+GAL3 semi-lethal mutation. Individual 1214 reduced fitness after generation 311
+GAL3 semi-lethal mutation. Individual 1262 reduced fitness after generation 311
+GAL3 semi-lethal mutation. Individual 1214 reduced fitness after generation 312
+GAL3 semi-lethal mutation. Individual 1262 reduced fitness after generation 312
+GAL3 semi-lethal mutation. Individual 1214 reduced fitness after generation 313
+GAL3 semi-lethal mutation. Individual 1262 reduced fitness after generation 313
+GAL3 semi-lethal mutation. Individual 1315 reduced fitness after generation 313
+GAL3 semi-lethal mutation. Individual 1214 reduced fitness after generation 314
+GAL3 semi-lethal mutation. Individual 1262 reduced fitness after generation 314
+GAL3 semi-lethal mutation. Individual 1315 reduced fitness after generation 314
+GAL3 semi-lethal mutation. Individual 1214 reduced fitness after generation 315
+GAL3 semi-lethal mutation. Individual 1315 reduced fitness after generation 315
+GAL3 semi-lethal mutation. Individual 1214 reduced fitness after generation 316
+GAL3 semi-lethal mutation. Individual 1315 reduced fitness after generation 316
+GAL3 semi-lethal mutation. Individual 1333 reduced fitness after generation 316
+GAL3 semi-lethal mutation. Individual 1315 reduced fitness after generation 317
+GAL3 semi-lethal mutation. Individual 1333 reduced fitness after generation 317
+GAL3 semi-lethal mutation. Individual 1347 reduced fitness after generation 317
+GAL3 semi-lethal mutation. Individual 1315 reduced fitness after generation 318
+GAL3 semi-lethal mutation. Individual 1333 reduced fitness after generation 318
+GAL3 semi-lethal mutation. Individual 1347 reduced fitness after generation 318
+GAL3 semi-lethal mutation. Individual 1315 reduced fitness after generation 319
+GAL3 semi-lethal mutation. Individual 1333 reduced fitness after generation 319
+GAL4 lethal mutation. Individual 1369 died in generation 319
 
 ```
+
+
+
 
 
 ## Additonal Notes 
@@ -140,4 +210,6 @@ No license as of yet.
 
 * Nick O'brien for his helpful feedback.
 * Daniel Ortiz-Barrientos for his feedback and for taking me on as a supervisor.
+
+
 -----------------------------------------------------------------------------------------------------------------------------------
