@@ -536,8 +536,8 @@ if (sum(p1.individualCount) == 0)
   catn("Cis Mutation Rate: " + CisMu);
   catn("Trans Mutation Rate: " + TransMu);
   catn("Non Coding Mutation Rate: " + G1Mu);
-  catn("Ratio of N:D:B mutations in promoter regions : "+ PNeuRatio + PDelRatio + PBenRatio);
-  catn("Ratio of N:D:B mutations in coding regions : " +CNeuRatio + CDelRatio + CBenRatio);
+  catn("Ratio of N:D:B mutations in promoter regions : "+ PNeuRatio + " " + PDelRatio + " " + PBenRatio);
+  catn("Ratio of N:D:B mutations in coding regions : " + CNeuRatio + " " + CDelRatio + " " + CBenRatio);
     catn();
       catn();
     catn("End initial output");
