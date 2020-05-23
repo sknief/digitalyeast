@@ -552,15 +552,14 @@ if (sum(p1.individualCount) == 0)
 
 inds = sim.subpopulations.individuals;
  meanNetwork = mean(inds.getValue("Network"));   
-  
-
-   catn();
+ 
+  catn();
    catn();
    catn("Generation: " + sim.generation);
-catn("Mean network binding affinity: " + meanNetwork);
+   catn("Mean network binding affinity: " + meanNetwork);
    catn();
    catn();
-
+   
   //History plot code
    history = sim.getValue("history");
    history = rbind(history, c(sim.generation, meanNetwork));
@@ -583,14 +582,28 @@ catn("Mean network binding affinity: " + meanNetwork);
      scriptPath = writeTempFile("plot_", ".R", rstr);
      system("/usr/local/bin/Rscript", args=scriptPath);
 
+    scriptData = writeTempFile("dataset_", ".txt", ""));
+    system("/usr/local/bin/Rscript", args=scriptData);
+
 
 } //late code closes here
 
-//last bit of history code: maybe try merging with section above?
+//last bit of history code
 1 late() {
 sim.setValue("history", matrix(c(0.0, 0.0), nrow=1));
 defineConstant("pdfPath", writeTempFile("plot_", ".pdf", ""));
+defineConstant("txtPath", writeTempFile("plot_", ".txt", ""));
+
 
  if (exists("slimgui"))
   slimgui.openDocument(pdfPath);
+  //slimgui.openDocument(txtPath); 
 }
+
+//full output that can be used to read from file later
+3000 late() {sim.outputFull("~/model_output.txt"); 
+
+
+
+ 
+
