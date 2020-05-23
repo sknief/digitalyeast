@@ -53,53 +53,91 @@ Once everything is installed, open SLiMGui (or SLiM from your command line if no
 
 ### Initial Parameters
 
-Explain what these tests test and why
+DY is highly customizable without even having to modify the core coding body. At the start of the SLiM script, you will find this block of code:
 
 ```
-Give an example
+//CONSTANTS TO DEFINE : USER INPUT here
+    defineConstant("P", 10); //initial population size
+    defineConstant("K", 100); //carrying capacity
+    defineConstant("glucose", 0.5); //extracellular glucose
+    defineConstant("galactose", 20.0); //High: >25, Low <5, None = 0
+    defineConstant("SP", 0.1); //Selective pressure scalar, 0.1 is standard, increase for higher selective pressure
+    defineConstant("L", 3); //lethal mutation cutoff number for individual gene binding affinity
+     defineConstant("LL", 7); //lethal mutation cutoff number for network function
+    defineConstant("CisMu", 1e-5); //mutation rate of cis element
+    defineConstant("TransMu", 1e-5); //mutation rate of trans ELEMENTS
+    defineConstant("G1Mu", 1e-5); //mutation rate of noncoding regions
+    //note: the next three have to add up to 1
+    defineConstant("PDelRatio", 0.25); //proportion of deleterious mutations generated in promoter region
+    defineConstant("PBenRatio", 0.15); //proportion of beneficial mutations generated in promoter region
+    defineConstant("PNeuRatio", 0.6); // proportion of neutral mutations generated in promoter region
+    //note: these next three also have to add up to 1
+    defineConstant("CDelRatio", 0.25); //proportion of deleterious mutations generated in coding region
+    defineConstant("CBenRatio", 0.15); //proportion of beneficial mutations generated in coding region
+    defineConstant("CNeuRatio", 0.6); // proportion of neutral mutations generated in coding region
+
 ```
+To change any of these parameters, simply edit the number within the brackets. Each line of code is annotated with the function and any important information relating to these parameters. At the start of each simulation run, these parameters are printed - this makes it easier for users to save the total output of a simulation run including the parameters that led to this output. 
+
+Take care to not remove the // of each line; if you do, the simulation will display an error message. 
+
 
 ### Sample Output
 
-Explain what these tests test and why
+Any given simulation run might produce output similar to the following. Note that this is not the complete output, but simply a fraction of the output. 
 
 ```
-Give an example
+//CONSTANTS TO DEFINE : USER INPUT here
+    defineConstant("P", 10); //initial population size
+    defineConstant("K", 100); //carrying capacity
+    defineConstant("glucose", 0.5); //extracellular glucose
+    defineConstant("galactose", 20.0); //High: >25, Low <5, None = 0
+    defineConstant("SP", 0.1); //Selective pressure scalar, 0.1 is standard, increase for higher selective pressure
+    defineConstant("L", 3); //lethal mutation cutoff number for individual gene binding affinity
+     defineConstant("LL", 7); //lethal mutation cutoff number for network function
+    defineConstant("CisMu", 1e-5); //mutation rate of cis element
+    defineConstant("TransMu", 1e-5); //mutation rate of trans ELEMENTS
+    defineConstant("G1Mu", 1e-5); //mutation rate of noncoding regions
+    //note: the next three have to add up to 1
+    defineConstant("PDelRatio", 0.25); //proportion of deleterious mutations generated in promoter region
+    defineConstant("PBenRatio", 0.15); //proportion of beneficial mutations generated in promoter region
+    defineConstant("PNeuRatio", 0.6); // proportion of neutral mutations generated in promoter region
+    //note: these next three also have to add up to 1
+    defineConstant("CDelRatio", 0.25); //proportion of deleterious mutations generated in coding region
+    defineConstant("CBenRatio", 0.15); //proportion of beneficial mutations generated in coding region
+    defineConstant("CNeuRatio", 0.6); // proportion of neutral mutations generated in coding region
+
 ```
 
 
 ## Additonal Notes 
 
-Add additional notes about how to deploy this on a live system
+This project was created for SCIE3241, a research course offered at the University of Queensland. I am part of the Ortiz-Barrientos Lab Group at UQ, under supervision of Daniel Ortiz-Barrientos. This code is currently a pre-release and as such might be modified / gain a few additional features before public release. 
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [SLiM 3](https://github.com/MesserLab/SLiM)
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+Currently I do not accept any contributions to this project. This section will be updated if that changes. 
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+I use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/sknief/digitalyeast/tags). 
+
+The current version is v1.0-alpha.
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+* **Stella Maria Sophie Knief** - *Sole Author and IP Holder* - [GitHub](https://github.com/sknief)
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+No license as of yet. 
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
-
+* Nick O'brien for his helpful feedback.
+* Daniel Ortiz-Barrientos for his feedback and for taking me on as a supervisor.
 -----------------------------------------------------------------------------------------------------------------------------------
