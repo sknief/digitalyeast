@@ -15,13 +15,13 @@ A genetic modeling approach enables faster data generation in a highly customiza
 ## Functions and Features
 
 * A wide range of initial model parameters that may be set by the user (see Using Digital Yeast, Initial Parameters), including but not limited to: 
- * Initial population size
- * Carrying capacity
- * Extracellular levels of glucose and galactose (leading to environment dependent fitness scaling)
- * Selective pressure scalar (environment independent)
- * Cis mutation rate
- * Trans mutation rate
- * Ratio of beneficial:deleterious:neutral mutations
+    * Initial population size
+    * Carrying capacity
+    * Extracellular levels of glucose and galactose (leading to environment dependent fitness scaling)
+    * Selective pressure scalar (environment independent)
+    * Cis mutation rate
+    * Trans mutation rate
+    * Ratio of beneficial:deleterious:neutral mutations
 * Spatial Visualisation of individials, fashioned to resemble a petridish in a lab
 * Extracellular environment impacts selection pressure (levels of glucose and galactose present)
 * Each individual is assigned an individual ID, allowing for tracking of focal individuals if so desired
