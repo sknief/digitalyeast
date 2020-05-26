@@ -4,23 +4,23 @@
 
 ## For SCIE3241 Assessment Purposes: Record Keeping
 
-At the start of the semester, Daniel and I agreed that my lab notebook would be a good way for me to keep track of my project, but noew that the project is completed, I have decided to submit my repository and github history in addition to a scan of my labnotebook, which can be found [Here](addlinklater). 
+At the start of the semester, Daniel and I agreed that my lab notebook would be a good way for me to keep track of my project, but now that the project is completed, I have realized that it makes the most sense to submit my repository and github history in addition to a scan of my labnotebook, which can be found [here](https://1drv.ms/b/s!AvuBqtop4WUNgfIG5bq4iuGHgu2kYQ?e=giz4uv). 
 
-My project is pretty much 90% coding, as such, my [GitHub commit history]() (which shows every update and every change I have made to my code since I started working on the code) is an accurate reflection of my work effort and the process that lead to the creation of "Digital Yeast". My project is not based in a physical lab, so I cannot write down experimental procedures and concrete results - instead my work process was conceptualizing what I wanted to achieve, trying to understand how I could turn this concept into code, and then a lot of trial and error, and repeat. 
+My project workload was pretty much 90% coding, as such, my [GitHub commit history](https://github.com/sknief/digitalyeast/commits/master) (which shows every update and every change I have made to my code since I started working on the code) is an accurate reflection of my work effort and the process that lead to the creation of "Digital Yeast". My project is not based in a physical lab, so I cannot write down experimental procedures and concrete results - instead my work process was conceptualizing what I wanted to achieve, trying to understand how I could turn this concept into code, and then a lot of trial and error, and repeat. 
 
-The coding language used (Eidos) and the program used (SLiM) was completely new to me, so the first month of my research was trying to understand the basics of the language and program and understand the biological background for my genetic model. A lot of the learning period and all of my conceptualizing and thought processes are recorded in my lab notebook. The code and the physical evidence of my work is recorded here - my GitHub is what experts in this field would look at, whereas my lab notebook is important only for people who want to follow my conceptualization process (and as such has turned a little bit messy at time, I apologize). Therefore, the complete picture can only be painted when considering both. 
+The coding language used (Eidos) and the program used (SLiM) were completely new to me, so the first month of my research was trying to understand the basics of the language and program and understand the biological background for my genetic model. A lot of the learning period and all of my conceptualizing and thought processes are recorded in my lab notebook. The code and the physical evidence of my work is recorded here - my GitHub is what experts in this field would look at, whereas my lab notebook is important only for people who want to follow my conceptualization process (and as such has turned a little bit messy at times, I apologize). Therefore, the complete picture can only be painted when considering both. 
 
 Also, there is a marked gap in my lab notebook around mid to late April. At the height of the initial COVID-19 uncertainty, I had a very hard time focusing and my mental health took quite a hit. I could not work on research in this time period, so please excuse the gap - it is not a lack of record keeping but a lack of research activities. 
 
-The rest of this page is the Read Me for my code, and may provide a good introduction to my project / code before exploring my GitHub history and my labnotebook scan. 
+The rest of this page is the ReadMe for my code, and may provide a good introduction to my project / code before exploring my GitHub history and my labnotebook scan. 
 
-- Stella
+Stella
 
  - - - -
 
 ## What is "Digital Yeast"?
 
-Digital Yeast (DY) is the first functional virtual model organism created for SLiM 3. It encompasses the the GAL Switch of Saccharomyces cerevisiae as the chosen model network. While only the GAL Switch is explicitly modelled in terms of focal genes and network structure, this system operates within the biological constraints of S. cerevisiae and reproduces sexually in a density-dependent matter as diploid yeast would. 
+Digital Yeast (DY) is a polygenic adaptation model created in SLiM 3. It encompasses the the GAL Switch of Saccharomyces cerevisiae as the chosen model network. While only the GAL Switch is explicitly modelled in terms of focal genes and network structure, this system operates within the biological constraints of S. cerevisiae and reproduces sexually in a density-dependent matter as diploid yeast would. 
 
 Essentially, you can think of individual simulation runs of DY as monitoring a petridish of S. cerevisiae in the lab! 
 
@@ -227,7 +227,7 @@ No license as of yet.
 ## Acknowledgments
 
 * Nick O'brien for his helpful feedback.
-* Daniel Ortiz-Barrientos for his feedback and for taking me on as a supervisor.
+* Daniel Ortiz-Barrientos for his help and for taking me on as a supervisor.
 
 
 -----------------------------------------------------------------------------------------------------------------------------------
