@@ -4,7 +4,7 @@
 
 ## For SCIE3241 Assessment Purposes: Record Keeping
 
-At the start of the semester, Daniel and I agreed that my lab notebook would be a good way for me to keep track of my project, but now that the project is completed, I have realized that it makes the most sense to submit my repository and github history in addition to a scan of my labnotebook, which can be found [here](https://1drv.ms/b/s!AvuBqtop4WUNgfIG5bq4iuGHgu2kYQ?e=giz4uv). 
+At the start of the semester, Daniel and I agreed that my lab notebook would be a good way for me to keep track of my project, but now that the project is completed, I have realized that it makes the most sense to submit my repository and github history in addition to a scan of my lab notebook, which can be found [here](https://1drv.ms/b/s!AvuBqtop4WUNgfIG5bq4iuGHgu2kYQ?e=giz4uv). 
 
 My project workload was pretty much 90% coding, as such, my [GitHub commit history](https://github.com/sknief/digitalyeast/commits/master) (which shows every update and every change I have made to my code since I started working on the code) is an accurate reflection of my work effort and the process that lead to the creation of "Digital Yeast". My project is not based in a physical lab, so I cannot write down experimental procedures and concrete results - instead my work process was conceptualizing what I wanted to achieve, trying to understand how I could turn this concept into code, and then a lot of trial and error, and repeat. 
 
