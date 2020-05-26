@@ -1,4 +1,4 @@
-# Digital Yeast : A Digital Model Organism for SLiM 3
+# Digital Yeast : An evolutionary systems biology model for SLiM 3
 
  - - - -
 
